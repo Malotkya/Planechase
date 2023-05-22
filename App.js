@@ -1,5 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import list from "./cards.json";
+
+console.log(list);
 
 export default function App() {
   return (
@@ -7,7 +10,7 @@ export default function App() {
       <Text>Image goes here.</Text>
       <Image
         style={imageStyles}
-        source={{uri: 'https://cards.scryfall.io/normal/front/4/2/42ecb371-53aa-4368-8ddd-88ae8e90ae0c.jpg'}}
+        source={{uri: list[0].image_uri}}
       />
     </View>
   );
