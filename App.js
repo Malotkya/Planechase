@@ -1,20 +1,8 @@
+import {useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
+import Card from "./src/Card";
 import list from "./cards.json";
-
-console.log(list);
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Image goes here.</Text>
-      <Image
-        style={imageStyles}
-        source={{uri: list[0].image_uri}}
-      />
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -23,10 +11,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    width: 100,
+    height: 50
+  }
 });
 
-const imageStyles = {
-  transform: 'rotate(90deg)',
-  width: 100,
-  height: 150
+export default function App() {
+  const [card, setCard] = useState(list[0]);
+  const randomIndex = () => {
+    return Math.floor(Math.random() * list.length);
+  };
+
+  const randomCard = () => {
+    setCard(list[randomIndex()]);
+  }
+
+  useEffect(()=>{
+    randomCard();
+  }, [])
+  return (
+    <View style={styles.container}>
+      <Button style={styles.button} onPress={randomCard}>Planeswalk</Button>
+      <Card card={card} />
+      <StatusBar />
+    </View>
+  );
 }
