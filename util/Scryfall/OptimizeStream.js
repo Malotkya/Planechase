@@ -36,6 +36,7 @@ class OptimizeStream extends Transform {
             this.list.push({
                 name: object.name,
                 text: object.oracle_text,
+                type: object.type_line,
                 image_uri: object.image_uris.normal
             });
         } else {

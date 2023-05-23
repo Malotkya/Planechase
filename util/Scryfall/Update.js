@@ -103,7 +103,8 @@ function download(uri){
  * @returns {Promise<void>}
  */
 async function update(filename){
-    const date = getDatabaseMetadata(filename);
+    const date = await getDatabaseMetadata(filename);
+    console.log(date);
     const update = await checkForUpdate(date);
 
     if(update){
