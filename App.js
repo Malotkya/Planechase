@@ -8,30 +8,30 @@ import list from "./cards.json";
 const array = new RandomArray(list);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    width: 100,
-    height: 100
-  }
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+      button: {
+      width: 100,
+      height: 100
+    }
 });
 
 export default function App() {
-  const [card, setCard] = useState(array.next());
+    const [card, setCard] = useState(array.next());
 
-  const randomCard = () => {
-    setCard(array.next());
-  }
-  
-  return (
-    <View style={styles.container}>
-      <Button style={styles.button} onPress={randomCard}>Planeswalk</Button>
-      <Card card={card} />
-      <StatusBar />
-    </View>
-  );
+    const nextCard = () => {
+        setCard(array.next());
+    }
+    
+    return (
+        <View style={styles.container}>
+            <Button style={styles.button} onPress={nextCard}>Planeswalk</Button>
+            <Card card={card} size={500}/>
+            <StatusBar />
+        </View>
+    );
 }
