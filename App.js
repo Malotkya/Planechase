@@ -25,7 +25,7 @@ const openLink = link => {
 export default function App() {   
     return (
         <View style={styles.container}>
-            <Deck list={list} />
+            <Deck list={list.Plane} />
             <View style={styles.footer}>
               <Text>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onClick={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
