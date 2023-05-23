@@ -1,37 +1,37 @@
-import {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Button } from 'react-native';
-import Card from "./src/Card";
-import RandomArray from './src/RandomArray';
+import { StyleSheet, View, Linking, Text, Button } from 'react-native';
+
+import Deck from "./src/Deck";
 import list from "./cards.json";
 
-const array = new RandomArray(list);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
-      button: {
-      width: 100,
-      height: 100
+    footer: {
+      width: '100%',
+      textAlign: "center"
     }
 });
 
-export default function App() {
-    const [card, setCard] = useState(array.next());
+const openLink = link => {
 
-    const nextCard = () => {
-        setCard(array.next());
-    }
-    
+}
+
+export default function App() {   
     return (
         <View style={styles.container}>
-            <Button style={styles.button} onPress={nextCard}>Planeswalk</Button>
-            <Card card={card} size={500}/>
-            <StatusBar />
+            <Deck list={list} />
+            <View style={styles.footer}>
+              <Text>Created by: Alex Malotky</Text>
+              <Button title="Github Repo" onClick={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
+              <Button title="My Other Work" onClick={()=>Linking.openURL("https://alexmalotky.com/Portfolio")} />
+            </View>
+            <StatusBar style="light"/>
         </View>
     );
 }
