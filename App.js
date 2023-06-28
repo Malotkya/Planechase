@@ -31,7 +31,7 @@ export default function App() {
               <Button title="Github Repo" onClick={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
               <Button title="My Other Work" onClick={()=>Linking.openURL("https://alexmalotky.com/Portfolio")} />
             </View>
-            <StatusBar style="light"/>
+            <StatusBar style="dark"/>
         </View>
     );
 }
