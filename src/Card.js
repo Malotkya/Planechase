@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {StyleSheet, Image, Text, View} from 'react-native';
 
 const RATIO = 0.69841;
@@ -47,12 +47,23 @@ const Card = props => {
         setVisible(!visible);
     }
 
+    useEffect(()=>{
+        setVisible(true)
+    }, [props.card])
+
+    const value = props.card || {
+        name: "undefined",
+        type: "undefined",
+        text: "undefined",
+        image_uri: ""
+    };
+
     return (
         <View style={styles.view} onClick={flip}>
-            <Text style={styles.name}>{props.card.name}</Text>
-            <Text style={styles.type}>{props.card.type}</Text>
-            <Text style={styles.text}>{props.card.text}</Text>
-            <Image style={styles.image} source={{uri:props.card.image_uri}} />
+            <Text style={styles.name}>{value.name}</Text>
+            <Text style={styles.type}>{value.type}</Text>
+            <Text style={styles.text}>{value.text}</Text>
+            <Image style={styles.image} source={{uri:value.image_uri}} />
         </View>
     )
 };
