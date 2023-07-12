@@ -2,8 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Linking, Text, Button } from 'react-native';
 
 import Deck from "./src/Deck";
-import list from "./cards.json";
-
+import CardList from "./src/CardList"
 
 const styles = StyleSheet.create({
     container: {
@@ -18,14 +17,13 @@ const styles = StyleSheet.create({
     }
 });
 
-const openLink = link => {
+export default function App() {
+    const list = [];
 
-}
-
-export default function App() {   
     return (
         <View style={styles.container}>
-            <Deck list={list.Plane} />
+            <CardList list={list} />
+            <Deck list={list} />
             <View style={styles.footer}>
               <Text>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onClick={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
