@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
         flexWrap: "nowrap"
     },
     buttonGroup: {
-      width: 100
+      width: 100,
+      justifyContent: "center"
     },
     button: {
       width: 100,
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 
 const Deck = props => {
     const [index, setIndex] = useState(0);
-    
+     
     const nextCard = () => {
         let i = index+1;
         if(i>=props.list.length)
@@ -48,4 +49,4 @@ const Deck = props => {
     );
 }
     
-    export default Deck;
+export default Deck;
