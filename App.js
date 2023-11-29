@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react'
 import { StyleSheet, View, Linking, Text, Button } from 'react-native';
 
-import Deck from "./src/Deck";
 import CardList from "./src/CardList"
+import Deck from "./src/Deck";
 
 const styles = StyleSheet.create({
     container: {
@@ -18,16 +19,29 @@ const styles = StyleSheet.create({
 });
 
 export default function App() {
-    const list = [];
+    const [list, setList] = useState([]);
+
+    const shuffleCards = list =>{
+        const newList = [];
+        const input = JSON.parse(JSON.stringify(list));
+
+        while(input.length > 0){
+            let index = Math.floor(Math.random() * input.length);
+            newList.push(input[index]);
+            input.splice(index, 1);
+        }
+
+        setList(newList);
+    }
 
     return (
         <View style={styles.container}>
-            <CardList list={list} />
-            <Deck list={list} />
+            <CardList callback={shuffleCards}/>
+            <Deck list={list}/>
             <View style={styles.footer}>
               <Text>Created by: Alex Malotky</Text>
-              <Button title="Github Repo" onClick={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
-              <Button title="My Other Work" onClick={()=>Linking.openURL("https://alexmalotky.com/Portfolio")} />
+              <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
+              <Button title="My Other Work" onPress={()=>Linking.openURL("https://alexmalotky.com/Portfolio")} />
             </View>
             <StatusBar style="dark"/>
         </View>
