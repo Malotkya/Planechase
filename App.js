@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react'
 import { StyleSheet, View, Linking, Text, Button } from 'react-native';
 
-import CardList from "./src/CardList"
+import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
 
 const styles = StyleSheet.create({
@@ -36,12 +36,12 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <CardList callback={shuffleCards}/>
+            <CardPicker callback={shuffleCards}/>
             <Deck list={list}/>
             <View style={styles.footer}>
               <Text>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
-              <Button title="My Other Work" onPress={()=>Linking.openURL("https://alexmalotky.com/Portfolio")} />
+              <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
             </View>
             <StatusBar style="dark"/>
         </View>
