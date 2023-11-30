@@ -3,7 +3,7 @@ import {StyleSheet, View, Button} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import List from "./Category";
-import initList from "../../cards.json";
+import allCards from "../../cards.json";
 
 export default function CardPicker(props){
     const [cards, setCards] = useState(undefined);
@@ -16,10 +16,11 @@ export default function CardPicker(props){
         }
     });
 
-    const getList = () =>{
+    const getList = (state) =>{
         const output = [];
+        state = state || cards;
 
-        for(let name in cards){
+        for(let name in state){
             for(let card of cards[name]){
                 if(card.use)
                     output.push(card);
@@ -31,9 +32,10 @@ export default function CardPicker(props){
 
     const updateState = (name, value) => {
         setCards((cards)=>{
-            cards[name] = value;
-            AsyncStorage.setItem("state", JSON.stringify(cards));
-            return cards;
+            const c = {...cards};
+            c[name] = value;
+            AsyncStorage.setItem("state", JSON.stringify(getList(c)));
+            return c;
         });
     }
     
@@ -44,16 +46,17 @@ export default function CardPicker(props){
                 if(value !== null) {
                     value = JSON.parse(value);
                 } else {
-                    value = {}
-                    for(let name in initList){
-                        value[name] = initList[name].map(card=>{
-                            card.use = true;
-                            return card;
-                        });
-                    }
+                    value = [];
                 }
 
-                setCards(value);
+                for(let name in allCards){
+                    allCards[name] = allCards[name].map(card=>{
+                        card.use = value.length === 0 || value.includes(card.name);
+                        return card;
+                    });
+                }
+
+                setCards(allCards);
             });
         } else {
             props.callback(getList());
