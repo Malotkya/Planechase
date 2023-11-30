@@ -2,10 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react'
 import { StyleSheet, View, Linking, Text, Button, Platform } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import * as Device from 'expo-device';
 
 import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
+
+switch(Platform.OS){
+    case "ios":
+    case "android":
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -15,8 +20,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     footer: {
-      width: '600px',
-      textAlign: "center"
+      paddingLeft: "100px",
+      width: '500px',
+      textAlign: "center",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "space-around"
     }
 });
 
@@ -36,22 +45,12 @@ export default function App() {
         setList(newList);
     }
 
-    switch(Platform.OS){
-        case "ios":
-        case "android":
-            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
-        case "web":
-        default:
-        if(Device.deviceType === Device.DeviceType.PHONE || Device.DeviceType.TABLET === "TABLET")
-            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
-    }
-
     return (
         <View style={styles.container}>
             <CardPicker callback={shuffleCards}/>
             <Deck list={list}/>
             <View style={styles.footer}>
-              <Text>Created by: Alex Malotky</Text>
+              <Text style={{width: "100%"}}>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
               <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
             </View>
