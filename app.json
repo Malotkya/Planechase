@@ -31,6 +31,14 @@
       "eas": {
         "projectId": "55fcb383-46b3-420f-b9e2-165e06966f24"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "LANDSCAPE_LEFT"
+        }
+      ]
+    ]
   }
 }

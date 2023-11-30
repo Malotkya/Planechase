@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react'
-import { StyleSheet, View, Linking, Text, Button } from 'react-native';
+import { StyleSheet, View, Linking, Text, Button, Platform } from 'react-native';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import * as Device from 'expo-device';
 
 import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
@@ -32,6 +34,16 @@ export default function App() {
         }
 
         setList(newList);
+    }
+
+    switch(Platform.OS){
+        case "ios":
+        case "android":
+            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+        case "web":
+        default:
+        if(Device.deviceName === "PHONE" || Device.deviceName === "TABLET")
+            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
     }
 
     return (
