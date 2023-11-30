@@ -3,20 +3,21 @@ import { StyleSheet, View, Button, Image } from 'react-native';
 
 import Card from "./Card";
 
-const styles = StyleSheet.create({
-    container: {
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "nowrap"
-    },
-    buttonGroup: {
-      width: 100,
-      justifyContent: "center"
-    },
-});
-
-const Deck = props => {
+export default function Deck(props){
+    
     const [index, setIndex] = useState(0);
+
+    const styles = StyleSheet.create({
+        container: {
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "nowrap"
+        },
+        buttonGroup: {
+          width: 100,
+          justifyContent: "center"
+        },
+    });
      
     const nextCard = () => {
         let i = index+1;
@@ -56,5 +57,3 @@ const Deck = props => {
         </View>
     );
 }
-    
-export default Deck;

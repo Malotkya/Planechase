@@ -4,7 +4,7 @@ import {StyleSheet, Image, Text, View} from 'react-native';
 export const RATIO = 0.69841;
 const OFFSET = -2;
 
-const Card = props => {
+export default function Card(props){
 
     const [visible, setVisible] = useState(true);
     const height = Math.ceil(props.size * RATIO);
@@ -68,5 +68,3 @@ const Card = props => {
         </View>
     )
 };
-
-export default Card;

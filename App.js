@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
-import { StyleSheet, View, Linking, Text, Button, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Linking, Text, Button, useWindowDimensions, Platform } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as Device from 'expo-device'
 
@@ -17,9 +17,11 @@ switch(Device.deviceType){
         ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
-document.body.style.backgroundColor = "black";
+if(Platform.OS === "web")
+    document.body.style.backgroundColor = "black";
 
 export default function App() {
+
     const [list, setList] = useState([]);
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
@@ -41,7 +43,7 @@ export default function App() {
         }
     });
 
-    const shuffleCards = list =>{
+    const shuffleCards = list => {
         const newList = [];
         const input = JSON.parse(JSON.stringify(list));
 
@@ -67,7 +69,7 @@ export default function App() {
             else
                 setSize(MAX_SIZE)
         }
-    }, [height, width])
+    }, [height, width]);
 
     return (
         <View style={styles.container}>
