@@ -1,9 +1,11 @@
 import {useState, useEffect} from "react";
-import {StyleSheet, View, Button} from "react-native";
+import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import List from "./Category";
 import allCards from "../../cards.json";
+
+import { INVERTSE_RATIO } from "../../App";
 
 export default function CardPicker(props){
     const [cards, setCards] = useState(undefined);
@@ -11,19 +13,28 @@ export default function CardPicker(props){
 
     const styles = StyleSheet.create({
         wrapper: {
-            width: '600px',
+            width: `${props.size}px`,
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'nowrap',
             zIndex: 99,
-            elevation: 99
+            elevation: 99,
+            height: "0px",
+            overflow: "visible"
         },
         button: {
             width: "100px",
-            flexGrow: 0
+            height: "35px",
+            flexGrow: 1,
+            backgroundColor: "rgb(33, 150, 243)",
+            color: "white",
+            padding: "8px",
+            textTransform: "uppercase",
+            textAlign: "center",
         },
         view: {
             display: visible? "flex": "none",
+            height: `${props.size * INVERTSE_RATIO}px`,
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
@@ -89,7 +100,9 @@ export default function CardPicker(props){
 
     return (
         <View style={styles.wrapper}>
-            <Button title="Card List" onPress={flip}/>
+            <TouchableOpacity onPress={flip}>
+                <Text style={styles.button}>Card List</Text>
+            </TouchableOpacity>
             <View style={styles.view}>
                 {list}
             </View>
