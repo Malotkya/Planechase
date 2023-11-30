@@ -1,36 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react'
-import { StyleSheet, View, Linking, Text, Button, Platform } from 'react-native';
+import { useState, useEffect } from 'react'
+import { StyleSheet, View, Linking, Text, Button, useWindowDimensions } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import * as Device from 'expo-device'
 
 import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
+import { RATIO } from './src/Deck/Card';
 
-switch(Platform.OS){
-    case "ios":
-    case "android":
+export const INVERTSE_RATIO = 1 / RATIO;
+
+switch(Device.deviceType){
+    case Device.DeviceType.PHONE:
+    case Device.DeviceType.TABLET:
         ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    footer: {
-      paddingLeft: "100px",
-      width: '500px',
-      textAlign: "center",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "space-around"
-    }
-});
+document.body.style.backgroundColor = "black";
 
 export default function App() {
     const [list, setList] = useState([]);
+    const {height, width} = useWindowDimensions();
+    const [size, setSize] = useState(width);
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: 'black',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        footer: {
+          paddingLeft: "100px",
+          width: `${size}px`,
+          textAlign: "center",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+        }
+    });
 
     const shuffleCards = list =>{
         const newList = [];
@@ -45,12 +53,21 @@ export default function App() {
         setList(newList);
     }
 
+    useEffect(()=>{
+        const test = Math.floor(height * INVERTSE_RATIO);
+        if( test > (width-100) ){
+            setSize(width);
+        } else {
+            setSize(test);
+        }
+    }, [height, width])
+
     return (
         <View style={styles.container}>
-            <CardPicker callback={shuffleCards}/>
-            <Deck list={list}/>
+            <CardPicker callback={shuffleCards} size={size}/>
+            <Deck list={list} size={size}/>
             <View style={styles.footer}>
-              <Text style={{width: "100%"}}>Created by: Alex Malotky</Text>
+              <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
               <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
             </View>
