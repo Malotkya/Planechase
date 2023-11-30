@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     footer: {
-      width: '100%',
+      width: '600px',
       textAlign: "center"
     }
 });
