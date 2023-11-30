@@ -13,10 +13,6 @@ const styles = StyleSheet.create({
       width: 100,
       justifyContent: "center"
     },
-    button: {
-      width: 100,
-      height: 100
-    }
 });
 
 const Deck = props => {
@@ -51,11 +47,11 @@ const Deck = props => {
     return (
         <View style={styles.container}>
             <View style={styles.buttonGroup}>
-                <Button style={styles.button} onPress={nextCard} title="Next" />
-                <Button style={styles.button} onPress={prevCard} title="Previous" />
+                <Button onPress={nextCard} title="Next" />
+                <Button onPress={prevCard} title="Previous" />
             </View>
             <View>
-                <Card card={props.list[index]} size={500}/>
+                <Card card={props.list[index]} size={props.size-100}/>
             </View>
         </View>
     );
