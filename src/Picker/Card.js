@@ -15,7 +15,7 @@ export default function Card(props){
     }, [props.value.use])
 
     return (
-        <View>
+        <View style={{flexDirection: "row"}}>
             <Checkbox value={state} onValueChange={update}/>
             <Text>{props.value.name}</Text>
         </View>
