@@ -41,7 +41,7 @@ const Deck = props => {
         if(next) {
             Image.prefetch(next.image_uri);
         }
-    }, [index]);
+    });
 
     return (
         <View style={styles.container}>
