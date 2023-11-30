@@ -42,7 +42,7 @@ export default function App() {
             ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
         case "web":
         default:
-        if(Device.deviceName === "PHONE" || Device.deviceName === "TABLET")
+        if(Device.deviceType === Device.DeviceType.PHONE || Device.DeviceType.TABLET === "TABLET")
             ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
     }
 
