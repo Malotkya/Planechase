@@ -4,30 +4,6 @@ import Checkbox from 'expo-checkbox';
 
 import Card from "./Card";
 
-const styles = StyleSheet.create({
-    wrapper: {
-        width: "50%",
-        height: "35px",
-        flexGrow: 1,
-        display: "block"
-    },
-    column: {
-        position: 'absolute',
-        height: "400px",
-        width: "100%",
-        backgroundColor: "white"
-    },
-    title: {
-        flexDirection: "row",
-        backgroundColor: "lightgray"
-    },
-    titleText: {
-        fontSize: "1.2em",
-        textAlign: "center",
-        flexGrow: 1
-    }
-});
-
 export default function List(props){
 
     /** State Meaning:
@@ -38,6 +14,30 @@ export default function List(props){
     const [state, setState] = useState(-1);
     const list = props.list || [];
     const name = props.name || "";
+
+    const styles = StyleSheet.create({
+        wrapper: {
+            width: "50%",
+            height: "35px",
+            flexGrow: 1,
+            display: "block"
+        },
+        column: {
+            position: 'absolute',
+            height: `${props.size}px`,
+            width: "100%",
+            backgroundColor: "white"
+        },
+        title: {
+            flexDirection: "row",
+            backgroundColor: "lightgray"
+        },
+        titleText: {
+            fontSize: "1.2em",
+            textAlign: "center",
+            flexGrow: 1
+        }
+    });
 
     const updateList = value =>{
         for(let card of list)

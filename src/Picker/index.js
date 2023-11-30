@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import List from "./Category";
 import allCards from "../../cards.json";
 
-import { INVERTSE_RATIO } from "../../App";
+import { RATIO } from "../Deck/Card";
 
 export default function CardPicker(props){
     const [cards, setCards] = useState(undefined);
@@ -34,7 +34,6 @@ export default function CardPicker(props){
         },
         view: {
             display: visible? "flex": "none",
-            height: `${props.size * INVERTSE_RATIO}px`,
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
@@ -95,7 +94,7 @@ export default function CardPicker(props){
     const list = [];
     for(let name in cards){
         if(cards[name].length > 0)
-            list.push(<List name={name} list={cards[name]} update={updateState} key={name}/>)
+            list.push(<List name={name} list={cards[name]} update={updateState} key={name} size={Math.floor((props.size-100) * RATIO)-35}/>)
     }
 
     return (
