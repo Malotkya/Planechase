@@ -10,9 +10,23 @@ export default function CardPicker(props){
     const [visible, setVisible] = useState(false);
 
     const styles = StyleSheet.create({
+        wrapper: {
+            width: '600px',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
+            zIndex: 99,
+            elevation: 99
+        },
+        button: {
+            width: "100px",
+            flexGrow: 0
+        },
         view: {
-            position: 'absolute',
-            display: visible? "block": "none"
+            display: visible? "flex": "none",
+            flexDirection: "row",
+            flexWrap: "nowrap",
+            flexGrow: 1,
         }
     });
 
@@ -69,11 +83,12 @@ export default function CardPicker(props){
 
     const list = [];
     for(let name in cards){
-        list.push(<List name={name} list={cards[name]} update={updateState} key={name}/>)
+        if(cards[name].length > 0)
+            list.push(<List name={name} list={cards[name]} update={updateState} key={name}/>)
     }
 
     return (
-        <View>
+        <View style={styles.wrapper}>
             <Button title="Card List" onPress={flip}/>
             <View style={styles.view}>
                 {list}

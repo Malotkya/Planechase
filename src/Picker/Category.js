@@ -1,11 +1,34 @@
 import {useState, useEffect} from "react"
-import {ScrollView, View, Text, FlatList} from "react-native";
+import {ScrollView, View, Text, FlatList, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
 import Card from "./Card";
 
+const styles = StyleSheet.create({
+    wrapper: {
+        height: "35px",
+        flexGrow: 1,
+        display: "block"
+    },
+    column: {
+        position: 'absolute',
+        height: "400px",
+        width: "100%",
+        backgroundColor: "white"
+    },
+    title: {
+        flexDirection: "row",
+        backgroundColor: "lightgray"
+    },
+    titleText: {
+        fontSize: "1.2em",
+        textAlign: "center",
+        flexGrow: 1
+    }
+});
+
 export default function List(props){
-    
+
     /** State Meaning:
      * -1: Mix of true/false amongst the cards
      *  0: All cards are false
@@ -50,16 +73,18 @@ export default function List(props){
     }, [])
 
     return (
-        <ScrollView>
-            <View>
+        <View style={styles.wrapper}>
+            <View style={styles.title}>
                 <Checkbox  value={state === 1} onValueChange={updateList} />
-                <Text>{name}</Text>
+                <Text style={styles.titleText}>{name}</Text>
             </View>
-            <FlatList data={list}
-                      renderItem={item=><Card value={item.item}
-                      onValueChange={(value)=>updateCard(item.index, value)}
-                      key={item.index} />}
-            />
-        </ScrollView>
+            <ScrollView style={styles.column}>
+                <FlatList data={list}
+                        renderItem={item=><Card value={item.item}
+                        onValueChange={(value)=>updateCard(item.index, value)}
+                        key={item.index} />}
+                />
+            </ScrollView>
+        </View>
     )
 }
