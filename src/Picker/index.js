@@ -34,7 +34,7 @@ export default function CardPicker(props){
         setCards((cards)=>{
             const c = {...cards};
             c[name] = value;
-            AsyncStorage.setItem("state", JSON.stringify(getList(c)));
+            AsyncStorage.setItem("state", JSON.stringify(getList(c).map(card=>card.name)));
             return c;
         });
     }
