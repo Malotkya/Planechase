@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {View, Text} from "react-native";
 import Checkbox from 'expo-checkbox';
 
@@ -10,9 +10,13 @@ export default function Card(props){
         props.onValueChange(value);
     }
 
+    useEffect(()=>{
+        setState(props.value.use);
+    }, [props.value.use])
+
     return (
         <View>
-            <Checkbox value={state} onValueChange={setState}/>
+            <Checkbox value={state} onValueChange={update}/>
             <Text>{props.value.name}</Text>
         </View>
     )
