@@ -41,6 +41,11 @@ const Deck = props => {
         if(next) {
             Image.prefetch(next.image_uri);
         }
+
+        const prev = props.list[index-1];
+        if(prev){
+            Image.prefetch(prev.image_uri);
+        }
     });
 
     return (
