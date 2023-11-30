@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {StyleSheet, Image, Text, View} from 'react-native';
 
-const RATIO = 0.69841;
+export const RATIO = 0.69841;
 const OFFSET = -2;
 
 const Card = props => {
@@ -18,7 +18,8 @@ const Card = props => {
             borderWidth: 2,
             borderRadius: 15,
             borderColor: "black",
-            overflow: "hidden"
+            overflow: "hidden",
+            backgroundColor: "white"
         },
         name: {
             textAlign: "center"
