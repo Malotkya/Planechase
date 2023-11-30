@@ -6,6 +6,7 @@ import Card from "./Card";
 
 const styles = StyleSheet.create({
     wrapper: {
+        width: "50%",
         height: "35px",
         flexGrow: 1,
         display: "block"
