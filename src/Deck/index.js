@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Image } from 'react-native';
 
 import Card from "./Card";
 
@@ -35,6 +35,13 @@ const Deck = props => {
             i=props.list.length-1;
         setIndex(i);
     }
+
+    useEffect(()=>{
+        const next= props.list[index+1];
+        if(next) {
+            Image.prefetch(next.image_uri);
+        }
+    }, [index]);
 
     return (
         <View style={styles.container}>
