@@ -5,6 +5,12 @@ import Checkbox from 'expo-checkbox';
 import Card from "./Card";
 
 export default function List(props){
+    
+    /** State Meaning:
+     * -1: Mix of true/false amongst the cards
+     *  0: All cards are false
+     *  1: All cards are true
+     */
     const [state, setState] = useState(-1);
     const list = props.list || [];
     const name = props.name || "";
