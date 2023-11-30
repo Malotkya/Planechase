@@ -9,6 +9,7 @@ import Deck from "./src/Deck";
 import { RATIO } from './src/Deck/Card';
 
 export const INVERTSE_RATIO = 1 / RATIO;
+const MAX_SIZE = 850;//px
 
 switch(Device.deviceType){
     case Device.DeviceType.PHONE:
@@ -55,10 +56,16 @@ export default function App() {
 
     useEffect(()=>{
         const test = Math.floor(height * INVERTSE_RATIO);
-        if( test > (width-100) ){
-            setSize(width);
+        if( test > (width-100)){
+            if(width < MAX_SIZE)
+                setSize(width);
+            else
+                setSize(MAX_SIZE)
         } else {
-            setSize(test);
+            if(test < MAX_SIZE)
+                setSize(test);
+            else
+                setSize(MAX_SIZE)
         }
     }, [height, width])
 
