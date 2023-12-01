@@ -12,7 +12,7 @@ const BULK_DATA_URI = "https://api.scryfall.com/bulk-data";
 function getOracleDatabaseInfo(){
     return new Promise((resolve, reject)=>{
 
-        https.get("https://api.scryfall.com/bulk-data", (response)=>{
+        https.get(BULK_DATA_URI, (response)=>{
             let buffer = "";
 
             response.on("data", data =>{
@@ -36,7 +36,7 @@ function getOracleDatabaseInfo(){
                     reject(e);
                 }
             });
-        })
+        });
     });
 };
 
@@ -45,13 +45,15 @@ function getOracleDatabaseInfo(){
  * @param {string} lastUpdate 
  * @returns {Promise<any|undefined>} - update infomration.
  */
-async function checkForUpdate(lastUpdate){
-    let data = await getOracleDatabaseInfo();
-
-    if(new Date(data.updated_at).valueOf() > new Date(lastUpdate).valueOf())
-        return data;
-
-    return undefined;
+function checkForUpdate(lastUpdate){
+    return new Promise((resolve, reject)=>{
+        getOracleDatabaseInfo().then(data=>{
+            if(new Date(data.updated_at).valueOf() > new Date(lastUpdate).valueOf())
+                resolve(data);
+            else
+                resolve(undefined);
+        }).catch(reject)
+    });
 }
 
 /** Get File Metadata
@@ -102,24 +104,30 @@ function download(uri){
  * @param {string} filename 
  * @returns {Promise<void>}
  */
-async function update(filename){
-    const date = await getDatabaseMetadata(filename);
-    console.log(date);
-    const update = await checkForUpdate(date);
+function update(filename){
+    getDatabaseMetadata(filename).then(date=>{
+        console.log(date);
 
-    if(update){
-        console.log(update.size);
-        const newFile = await download(update.download_uri);
-        try {
-            fs.unlinkSync(filename);
-        } catch(e){
-            //Dont care if file doesn't exist.
-        }
-        
-        fs.renameSync(newFile, filename);
-    } else {
-        console.log("Everything is up to date!");
-    }
+        checkForUpdate(date).then(update=>{
+
+            if(update){
+                console.log(update.size);
+                
+                download(update.download_uri).then(newFileName=>{
+                    try {
+                        fs.unlinkSync(filename);
+                    } catch(e){
+                        //Dont care if file doesn't exist.
+                    }
+                    
+                    fs.renameSync(newFileName, filename);
+                });
+
+            } else {
+                console.log("Everything is up to date!");
+            }
+        });
+    });
 }
 
 module.exports = update;
