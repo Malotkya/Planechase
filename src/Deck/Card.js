@@ -63,7 +63,7 @@ export default function Card(props){
         <View style={styles.view} onClick={flip}>
             <Text style={styles.name}>{value.name}</Text>
             <Text style={styles.type}>{value.type}</Text>
-            <Text style={styles.text}>{value.text}</Text>
+            <Text style={styles.text}>{value.text.replace("\n", "\n\n")}</Text>
             <Image style={styles.image} source={{uri:value.image_uri}} />
         </View>
     )
