@@ -1,7 +1,12 @@
+/** /src/Picker/Category
+ * 
+ * @author Alex Malotky
+ */
 import {useState, useEffect} from "react"
 import {ScrollView, View, Text, FlatList, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
+import {BUTTON_HEIGHT} from "../Constants"
 import Card from "./Card";
 
 export default function List(props){
@@ -12,19 +17,23 @@ export default function List(props){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
+
+    if(typeof props.size !== "number")
+        throw new TypeError("Need to know the size of the List!");
+
     const list = props.list || [];
     const name = props.name || "";
 
     const styles = StyleSheet.create({
         wrapper: {
             width: "50%",
-            height: "35px",
+            height: BUTTON_HEIGHT,
             flexGrow: 1,
             display: "block",
         },
         column: {
             position: 'absolute',
-            height: `${props.size}px`,
+            height: props.size,
             width: "100%",
             backgroundColor: "white",
             borderColor: "black",
@@ -33,7 +42,7 @@ export default function List(props){
         title: {
             flexDirection: "row",
             backgroundColor: "lightgray",
-            height: 35,
+            height: BUTTON_HEIGHT,
             borderColor: "black",
             borderWidth: 1,
             borderBottomWidth: 0
@@ -42,7 +51,7 @@ export default function List(props){
             fontSize: "1.2em",
             textAlign: "center",
             flexGrow: 1,
-            lineHeight: 35
+            lineHeight: BUTTON_HEIGHT
         },
         checkbox: {
             justifyContent: "center",

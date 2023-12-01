@@ -1,6 +1,11 @@
+/** /src/Deck
+ * 
+ * @author Alex Malotky
+ */
 import {useState, useEffect} from 'react';
-import { StyleSheet, View, Button, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
+import { BUTTON_WIDTH, BUTTON_DEFAULT } from '../Constants';
 import Card from "./Card";
 
 export default function Deck(props){
@@ -14,9 +19,12 @@ export default function Deck(props){
             flexWrap: "nowrap"
         },
         buttonGroup: {
-          width: 100,
+          width: BUTTON_WIDTH,
           justifyContent: "center"
         },
+        button: {
+            ...BUTTON_DEFAULT
+        }
     });
      
     const nextCard = () => {
@@ -48,11 +56,15 @@ export default function Deck(props){
     return (
         <View style={styles.container}>
             <View style={styles.buttonGroup}>
-                <Button onPress={nextCard} title="Next" />
-                <Button onPress={prevCard} title="Previous" />
+                <TouchableOpacity onPress={nextCard}>
+                    <Text style={styles.button}>Next</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={prevCard}>
+                    <Text style={styles.button}>Previous</Text>
+                </TouchableOpacity>
             </View>
             <View>
-                <Card card={props.list[index]} size={props.size-100}/>
+                <Card card={props.list[index]} size={props.size-BUTTON_WIDTH}/>
             </View>
         </View>
     );

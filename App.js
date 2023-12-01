@@ -1,3 +1,7 @@
+/** /App
+ * 
+ * @author Alex Malotky
+ */
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
 import { StyleSheet, View, Linking, Text, Button, useWindowDimensions, Platform } from 'react-native';
@@ -6,10 +10,7 @@ import * as Device from 'expo-device'
 
 import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
-import { RATIO } from './src/Deck/Card';
-
-export const INVERTSE_RATIO = 1 / RATIO;
-const MAX_SIZE = 850;//px
+import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH } from './src/Constants';
 
 switch(Device.deviceType){
     case Device.DeviceType.PHONE:
@@ -34,8 +35,8 @@ export default function App() {
             justifyContent: 'center'
         },
         footer: {
-          paddingLeft: "100px",
-          width: `${size}px`,
+          paddingLeft: BUTTON_WIDTH,
+          width: size,
           textAlign: "center",
           flexDirection: "row",
           flexWrap: "wrap",
@@ -58,7 +59,7 @@ export default function App() {
 
     useEffect(()=>{
         const test = Math.floor(height * INVERTSE_RATIO);
-        if( test > (width-100)){
+        if( test > (width-BUTTON_WIDTH)){
             if(width < MAX_SIZE)
                 setSize(width);
             else

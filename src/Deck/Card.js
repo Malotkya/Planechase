@@ -1,14 +1,29 @@
+/** /src/Deck/Card
+ * 
+ * @author Alex Malotky
+ */
 import {useState, useEffect} from 'react';
 import {StyleSheet, Image, Text, View} from 'react-native';
 
-export const RATIO = 0.69841;
+import { RATIO } from '../Constants';
 const OFFSET = -2;
 
 export default function Card(props){
 
     const [visible, setVisible] = useState(true);
-    const height = Math.ceil(props.size * RATIO);
+
+    if(typeof props.size !== "number")
+        throw new TypeError("Need to know the size of the card!");
+    
     const width = props.size;
+    const height = Math.ceil(props.size * RATIO);
+
+    const {
+        name = "undefined",
+        type = "undefined",
+        text = "undefined",
+        image_uri = ""
+    } = props.card || {};
 
     const styles = StyleSheet.create({
         view: {
@@ -52,19 +67,12 @@ export default function Card(props){
         setVisible(true)
     }, [props.card])
 
-    const value = props.card || {
-        name: "undefined",
-        type: "undefined",
-        text: "undefined",
-        image_uri: ""
-    };
-
     return (
         <View style={styles.view} onClick={flip}>
-            <Text style={styles.name}>{value.name}</Text>
-            <Text style={styles.type}>{value.type}</Text>
-            <Text style={styles.text}>{value.text.replace("\n", "\n\n")}</Text>
-            <Image style={styles.image} source={{uri:value.image_uri}} />
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.type}>{type}</Text>
+            <Text style={styles.text}>{text.replace("\n", "\n\n")}</Text>
+            <Image style={styles.image} source={{uri:image_uri}} />
         </View>
     )
 };

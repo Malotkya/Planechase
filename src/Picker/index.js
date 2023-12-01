@@ -1,3 +1,7 @@
+/** /src/Picker
+ * 
+ * @author Alex Malotky
+ */
 import {useState, useEffect} from "react";
 import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -5,33 +9,30 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import List from "./Category";
 import allCards from "../../cards.json";
 
-import { RATIO } from "../Deck/Card";
+import { RATIO, BUTTON_DEFAULT, BUTTON_WIDTH, BUTTON_HEIGHT } from "../Constants";
 
 export default function CardPicker(props){
     const [cards, setCards] = useState(undefined);
     const [visible, setVisible] = useState(false);
 
+    if(typeof props.size === "undefined")
+        throw new TypeError("Need to know the size of the card picker!");
+
+    const LIST_SIZE = Math.floor((props.size-BUTTON_WIDTH) * RATIO)-BUTTON_HEIGHT;
+
     const styles = StyleSheet.create({
         wrapper: {
-            width: `${props.size}px`,
+            width: props.size,
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'nowrap',
             zIndex: 99,
             elevation: 99,
-            height: "0px",
+            height: 0,
             overflow: "visible"
         },
         button: {
-            width: "100px",
-            height: "35px",
-            flexGrow: 1,
-            backgroundColor: "rgb(33, 150, 243)",
-            color: "white",
-            padding: "8px",
-            textTransform: "uppercase",
-            textAlign: "center",
-            borderRadius: 3
+            ...BUTTON_DEFAULT
         },
         view: {
             display: visible? "flex": "none",
@@ -95,7 +96,7 @@ export default function CardPicker(props){
     const list = [];
     for(let name in cards){
         if(cards[name].length > 0)
-            list.push(<List name={name} list={cards[name]} update={updateState} key={name} size={Math.floor((props.size-100) * RATIO)-35}/>)
+            list.push(<List name={name} list={cards[name]} update={updateState} key={name} size={LIST_SIZE}/>)
     }
 
     return (
