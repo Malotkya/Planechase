@@ -1,13 +1,25 @@
 import {useState, useEffect} from "react";
-import {View, Text} from "react-native";
+import {TouchableOpacity, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
 export default function Card(props){
     const [state, setState] = useState(props.value.use);
 
-    const update = value => {
-        setState(value);
-        props.onValueChange(value);
+    const styles = StyleSheet.create({
+        touch: {
+            padding: "3px",
+            flexDirection: "row",
+            borderBottomColor: "black",
+            borderBottomWidth: 1
+        },
+        text: {
+            paddingLeft: "5px"
+        }
+    })
+
+    const update = () => {
+        setState(!state);
+        props.onValueChange(!state);
     }
 
     useEffect(()=>{
@@ -15,9 +27,9 @@ export default function Card(props){
     }, [props.value.use])
 
     return (
-        <View style={{flexDirection: "row"}}>
-            <Checkbox value={state} onValueChange={update}/>
-            <Text>{props.value.name}</Text>
-        </View>
+        <TouchableOpacity style={styles.touch} onPress={update}>
+            <Checkbox value={state} />
+            <Text style={styles.text}>{props.value.name}</Text>
+        </TouchableOpacity>
     )
 }
