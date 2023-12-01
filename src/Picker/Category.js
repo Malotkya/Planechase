@@ -20,22 +20,33 @@ export default function List(props){
             width: "50%",
             height: "35px",
             flexGrow: 1,
-            display: "block"
+            display: "block",
         },
         column: {
             position: 'absolute',
             height: `${props.size}px`,
             width: "100%",
-            backgroundColor: "white"
+            backgroundColor: "white",
+            borderColor: "black",
+            borderWidth: 1,
         },
         title: {
             flexDirection: "row",
-            backgroundColor: "lightgray"
+            backgroundColor: "lightgray",
+            height: 35,
+            borderColor: "black",
+            borderWidth: 1,
+            borderBottomWidth: 0
         },
         titleText: {
             fontSize: "1.2em",
             textAlign: "center",
-            flexGrow: 1
+            flexGrow: 1,
+            lineHeight: 35
+        },
+        checkbox: {
+            justifyContent: "center",
+            padding: "3px"
         }
     });
 
@@ -76,7 +87,9 @@ export default function List(props){
     return (
         <View style={styles.wrapper}>
             <View style={styles.title}>
-                <Checkbox  value={state === 1} onValueChange={updateList} />
+                <View style={styles.checkbox}>
+                    <Checkbox  value={state === 1} onValueChange={updateList} />
+                </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
             <ScrollView style={styles.column}>

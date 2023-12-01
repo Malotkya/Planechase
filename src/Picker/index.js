@@ -31,6 +31,7 @@ export default function CardPicker(props){
             padding: "8px",
             textTransform: "uppercase",
             textAlign: "center",
+            borderRadius: 3
         },
         view: {
             display: visible? "flex": "none",
