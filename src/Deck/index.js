@@ -23,7 +23,11 @@ export default function Deck(props){
           justifyContent: "center"
         },
         button: {
-            ...BUTTON_DEFAULT
+            ...BUTTON_DEFAULT,
+            margin: 3
+        },
+        shuffle: {
+            marginTop: "5%"
         }
     });
      
@@ -61,6 +65,9 @@ export default function Deck(props){
                 </TouchableOpacity>
                 <TouchableOpacity onPress={prevCard}>
                     <Text style={styles.button}>Previous</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.shuffle} onPress={props.shuffle}>
+                    <Text style={styles.button}>Shuffle</Text>
                 </TouchableOpacity>
             </View>
             <View>
