@@ -10,7 +10,7 @@ import * as Device from 'expo-device'
 
 import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
-import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH } from './src/Constants';
+import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
 
 switch(Device.deviceType){
     case Device.DeviceType.PHONE:
@@ -58,7 +58,7 @@ export default function App() {
     }
 
     useEffect(()=>{
-        const test = Math.floor(height * INVERTSE_RATIO);
+        const test = Math.ceil((height - (BUTTON_HEIGHT*1.5)) * INVERTSE_RATIO);
         if( test > (width-BUTTON_WIDTH)){
             if(width < MAX_SIZE)
                 setSize(width);
@@ -75,7 +75,7 @@ export default function App() {
     return (
         <View style={styles.container}>
             <CardPicker callback={shuffleCards} size={size}/>
-            <Deck list={list} size={size}/>
+            <Deck list={list} size={size} shuffle={()=>shuffleCards(list)}/>
             <View style={styles.footer}>
               <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
