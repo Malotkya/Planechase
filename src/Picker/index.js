@@ -47,7 +47,7 @@ export default function CardPicker(props){
         state = state || cards;
 
         for(let name in state){
-            for(let card of cards[name]){
+            for(let card of state[name]){
                 if(card.use)
                     output.push(card);
             }
