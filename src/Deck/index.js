@@ -51,7 +51,7 @@ export default function Deck(props){
         if(prev){
             Image.prefetch(prev.image_uri);
         }
-    });
+    }, [index]);
 
     return (
         <View style={styles.container}>

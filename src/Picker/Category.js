@@ -22,7 +22,7 @@ export default function List(props){
         throw new TypeError("Need to know the size of the List!");
 
     const list = props.list || [];
-    const name = props.name || "";
+    const name = props.name || "undefined";
 
     const styles = StyleSheet.create({
         wrapper: {
@@ -91,7 +91,7 @@ export default function List(props){
                 }
             }
         }
-    }, [])
+    });
 
     return (
         <View style={styles.wrapper}>
@@ -103,9 +103,11 @@ export default function List(props){
             </View>
             <ScrollView style={styles.column}>
                 <FlatList data={list}
-                        renderItem={item=><Card value={item.item}
-                        onValueChange={(value)=>updateCard(item.index, value)}
-                        key={item.index} />}
+                    renderItem={
+                        (it)=>{
+                            return (<Card value={it.item} onValueChange={(value)=>updateCard(it.index, value)} key={it.index} />)
+                        }
+                    }
                 />
             </ScrollView>
         </View>
