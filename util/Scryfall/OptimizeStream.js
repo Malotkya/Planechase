@@ -32,6 +32,14 @@ class OptimizeStream extends Transform {
     }
 
     _flush(callback){
+        for(let name in this.list){
+            if(this.list[name].length === 0){
+                delete this.list[name]
+            } else {
+                this.list[name].sort((a,b)=>a.name.localeCompare(b.name));
+            }
+        }
+        this.list[PLANE]
         this.push(JSON.stringify(this.list, null, 2));
         callback();
     }
