@@ -1,3 +1,7 @@
+/** /src/Picker/Card
+ * 
+ * @author Alex Malotky
+ */
 import {useState, useEffect} from "react";
 import {TouchableOpacity, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
