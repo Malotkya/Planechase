@@ -12,14 +12,37 @@ import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
 import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
 
-switch(Device.deviceType){
-    case Device.DeviceType.PHONE:
-    case Device.DeviceType.TABLET:
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
-}
-
 if(Platform.OS === "web")
     document.body.style.backgroundColor = "black";
+
+//Check for Apple iOS and attempt to lock landscape.
+switch(Device.osName){
+    case "iOS":
+    case "iPadOS":
+        ScreenOrientation.unlockAsync()
+            .then(forceLandscape)
+            .catch(console.error);
+        break;
+
+    default: 
+        forceLandscape();
+}
+
+/** Force Landscape on Phones and Tablets
+ * 
+ */
+function forceLandscape() {
+    switch(Device.deviceType){
+        case Device.DeviceType.PHONE:
+        case Device.DeviceType.TABLET:
+            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
+                .catch((error)=>{
+                    console.error(error);
+                    alert("Try using the app in landscape mode!");
+                });
+            break;
+    }
+}
 
 export default function App() {
 
@@ -44,6 +67,10 @@ export default function App() {
         }
     });
 
+    /** Shuffle Cards
+     * 
+     * @param {Array<Cards>} list 
+     */
     const shuffleCards = list => {
         const newList = [];
         const input = JSON.parse(JSON.stringify(list));
@@ -57,6 +84,9 @@ export default function App() {
         setList(newList);
     }
 
+    /** Resize Effect
+     * 
+     */
     useEffect(()=>{
         const test = Math.ceil((height - (BUTTON_HEIGHT*1.5)) * INVERTSE_RATIO);
         if( test > (width-BUTTON_WIDTH)){
