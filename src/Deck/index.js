@@ -30,7 +30,10 @@ export default function Deck(props){
             marginTop: "5%"
         }
     });
-     
+    
+    /** Get Next Card
+     * 
+     */
     const nextCard = () => {
         let i = index+1;
         if(i>=props.list.length)
@@ -38,6 +41,9 @@ export default function Deck(props){
         setIndex(i);
     }
 
+    /** Get Previous Card
+     * 
+     */
     const prevCard = () => {
         let i = index-1;
         if(i<0)
@@ -45,6 +51,9 @@ export default function Deck(props){
         setIndex(i);
     }
 
+    /** Pre-load the next images on card change.
+     * 
+     */
     useEffect(()=>{
         const next= props.list[index+1];
         if(next) {
@@ -56,6 +65,19 @@ export default function Deck(props){
             Image.prefetch(prev.image_uri);
         }
     }, [index]);
+
+    /** Pre-load the next images on list change.
+     * 
+     */
+    useEffect(()=>{
+        if(props.list.length > 1){
+            Image.prefetch(props.list[1].image_uri);
+            Image.prefetch(props.list[props.list.length-1].image_uri);
+        }
+
+    }, [props.list])
+
+    
 
     return (
         <View style={styles.container}>
