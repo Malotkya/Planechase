@@ -7,6 +7,12 @@ class ImportStream extends Transform {
         this.count = 0;
     }
 
+    /** Transform Data
+     * 
+     * @param {Buffer} data 
+     * @param {string} encoding 
+     * @param {Function} callback 
+     */
     _transform(data, encoding, callback){
         this.buffer += data.toString();
         this.count += data.length;
@@ -27,13 +33,16 @@ class ImportStream extends Transform {
         callback();
     }
 
+    /** Process Line
+     * 
+     * @param {string} line 
+     */
     processLine(line) {
         try {
             //Remove Comma from line
-            if (line[line.length - 1] == ",")
+            if (line.charAt(-1) === ",")
                 line = line.slice(0, -1);
-            let object = JSON.parse(line);
-            this.processCard(object);
+            this.processCard(JSON.parse(line));
         }
         catch (error) {
             if (line != "[" && line != "]")
@@ -41,8 +50,14 @@ class ImportStream extends Transform {
         }
     }
 
+    /** Process Card
+     * 
+     * @param {any} object 
+     */
     processCard(object){
         if(object.layout === "planar")
+            this.push(JSON.stringify(object) + '\n');
+        else if(object.name.includes("Bounty:"))
             this.push(JSON.stringify(object) + '\n');
     }
 }

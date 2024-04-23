@@ -2,18 +2,59 @@ const {Transform} = require('stream');
 
 const PLANE = "Plane";
 const PHENOMENON = "Phenomenon";
-const UNKNOWN = "Unkown";
+const BOUNTY = "Card";
+
+/** Push value
+ * 
+ * Checks to make sure the object has an array at the
+ * name, and then pushes the value onto the array.
+ * 
+ * @param {Object} object 
+ * @param {string} name 
+ * @param {any} value 
+ */
+function push(object, name, value){
+    if( !Array.isArray(object[name]) ){
+        object[name] = [];
+    }
+
+    object[name].push(value);
+}
+
+/** Clean Arrays and Sort
+ * 
+ * @param {Object} object 
+ * @returns {Object}
+ */
+function clean(object){
+    for(let name in object){
+        if(!Array.isArray(object[name]) || object[name].length === 0) {
+            delete object[name];
+        } else {
+            object[name].sort((a,b)=>a.name.localeCompare(b.name));
+        }
+    }
+
+    return object;
+}
 
 class OptimizeStream extends Transform {
     constructor(){
         super();
-        this.list = {};
-        this.list[PLANE] = [];
-        this.list[PHENOMENON] = [];
-        this.list[UNKNOWN] = [];
+        this.planechase = {};
+        this.planechase[PLANE] = {};
+        this.planechase[PHENOMENON] = {};
+        this.bounty = {};
+        this.unknown = {};
         this.buffer = "";
     }
 
+    /** Transform Data
+     * 
+     * @param {Buffer} data 
+     * @param {string} encoding 
+     * @param {Function} callback 
+     */
     _transform(data, encoding, callback){
         this.buffer += data.toString();
         let index = this.buffer.indexOf('\n');
@@ -31,21 +72,33 @@ class OptimizeStream extends Transform {
         callback();
     }
 
+    /** Flush Data
+     * 
+     * @param {Function} callback 
+     */
     _flush(callback){
-        for(let name in this.list){
-            if(this.list[name].length === 0){
-                delete this.list[name]
-            } else {
-                this.list[name].sort((a,b)=>a.name.localeCompare(b.name));
-            }
-        }
-        this.list[PLANE]
-        this.push(JSON.stringify(this.list, null, 2));
+        const Planechase = {
+            Plane: clean(this.planechase[PLANE]),
+            Phenomenon: clean(this.planechase[PHENOMENON])
+        };
+
+        const Bounty = clean(this.bounty);
+        const Unknown = clean(this.unknown);
+
+        this.push(JSON.stringify({Planechase, Bounty, Unknown}, null, 2));
         callback();
     }
 
+    /** Process Line
+     * 
+     * @param {string} line 
+     */
     processLine(line){
         let object = JSON.parse(line);
+        const set = object.set_name || UNKNOWN;
+
+        if(Array.isArray(object.card_faces))
+            object = object.card_faces[0];
 
         if(object.image_uris){
             let temp = {
@@ -54,12 +107,15 @@ class OptimizeStream extends Transform {
                 type: object.type_line,
                 image_uri: object.image_uris.normal
             }
+            
             if(temp.type.includes(PLANE)){
-                this.list[PLANE].push(temp);
+                push(this.planechase[PLANE], set, temp);
             } else if(temp.type.includes(PHENOMENON)){
-                this.list[PHENOMENON].push(temp);
+                push(this.planechase[PHENOMENON], set, temp);
+            } else if(temp.type.includes(BOUNTY)){
+                push(this.bounty, set, temp);
             } else {
-                this.list[UNKNOWN].push(temp);
+                push(this.unknown, set, temp);
             }
         } else {
             this.emit("error", new Error("No images found for: " + object.name));
