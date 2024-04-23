@@ -2,18 +2,25 @@
  * 
  * @author Alex Malotky
  */
-import {useState, useEffect} from "react";
+import {useState, useEffect, Component} from "react";
 import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import List from "./Category";
-import allCards from "../../cards.json";
+
 
 import { RATIO, BUTTON_DEFAULT, BUTTON_WIDTH, BUTTON_HEIGHT } from "../Constants";
 
+/** Card Picker
+ * 
+ * @param {{callback:Function, size:number, init:Object}} props 
+ * @returns {Component}
+ */
 export default function CardPicker(props){
     const [cards, setCards] = useState(undefined);
     const [visible, setVisible] = useState(false);
+
+    console.log(props.init);
 
     if(typeof props.size === "undefined")
         throw new TypeError("Need to know the size of the card picker!");
@@ -42,6 +49,11 @@ export default function CardPicker(props){
         }
     });
 
+    /** Get List
+     * 
+     * @param {Object} state 
+     * @returns {Array}
+     */
     const getList = (state) =>{
         const output = [];
         state = state || cards;
@@ -75,14 +87,14 @@ export default function CardPicker(props){
                     value = [];
                 }
 
-                for(let name in allCards){
-                    allCards[name] = allCards[name].map(card=>{
+                for(let name in props.init){
+                    props.init[name] = props.init[name].map(card=>{
                         card.use = value.length === 0 || value.includes(card.name);
                         return card;
                     });
                 }
 
-                setCards(allCards);
+                setCards(props.init);
             });
         } else {
             props.callback(getList());

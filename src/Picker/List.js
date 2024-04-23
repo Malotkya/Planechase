@@ -7,14 +7,14 @@ import {ScrollView, View, Text, FlatList, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
 import {BUTTON_HEIGHT} from "../Constants"
-import List from "./List";
+import Card from "./Card";
 
 /**
  * 
- * @param {{name:string, list:{[name:string]:Array}, size:number}} props 
+ * @param {{name:string, list:Array, size:number, update:Function}} props 
  * @returns {Component}
  */
-export default function Category(props){
+export default function List(props){
 
     /** State Meaning:
      * -1: Mix of true/false amongst the cards
@@ -26,7 +26,7 @@ export default function Category(props){
     if(typeof props.size !== "number")
         throw new TypeError("Need to know the size of the List!");
 
-    const list = props.list || {};
+    const list = props.list || [];
     const name = props.name || "undefined";
 
     const styles = StyleSheet.create({
@@ -64,33 +64,21 @@ export default function Category(props){
         }
     });
 
-    /** Update Category
-     * 
-     * @param {boolean} value 
-     */
-    const updateCategory = value =>{
-        for(let name in list) {
-            for(let card of list[name]) {
-                card.use = value;
-            }
-        }
+    const updateList = value =>{
+        for(let card of list)
+            card.use = value;
         setState(+ value);
         props.update(name, list)
     }
 
-    /** Update List
-     * 
-     * @param {string} name 
-     * @param {Array} value 
-     */
-    const updateList = (name, value) =>{
+    const updateCard = (index, value) =>{
         setState(-1);
-        list[index] = value;
+        list[index].use = value;
         props.update(name, list);
     }
 
     useEffect(()=>{
-        /*if(list.length > 0){
+        if(list.length > 0){
             let initState = list[0].use;
 
             if(initState !== undefined) {
@@ -107,13 +95,8 @@ export default function Category(props){
                     setState(+ initState);
                 }
             }
-        }*/
+        }
     });
-
-    const scroll = [];
-    for(let name of list){
-        scroll.push(<List name={name} list={list[name]} update={updateList} />)
-    }
 
     return (
         <View style={styles.wrapper}>
@@ -123,9 +106,13 @@ export default function Category(props){
                 </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
-            <ScrollView style={styles.column}>
-                {scroll}
-            </ScrollView>
+            <FlatList data={list}
+                    renderItem={
+                        (it)=>{
+                            return (<Card value={it.item} onValueChange={(value)=>updateCard(it.index, value)} key={it.index} />)
+                        }
+                    }
+                />
         </View>
     )
 }
