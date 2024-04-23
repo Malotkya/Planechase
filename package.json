@@ -6,9 +6,9 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
+    "web": "set NODE_OPTIONS=--openssl-legacy-provider && expo start --web",
 
-    "deploy": "npx expo export:web && firebase deploy",
+    "deploy": "set NODE_OPTIONS=--openssl-legacy-provider && npx expo export:web && firebase deploy",
     "scryfall": "node ./util/update.js"
   },
   "dependencies": {
