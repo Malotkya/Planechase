@@ -7,6 +7,7 @@ import {ScrollView, View, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
 import {BUTTON_HEIGHT} from "../Constants"
+import {fontSize} from "../Util";
 import List from "./List";
 
 interface CategoryProps {
@@ -19,7 +20,7 @@ interface CategoryProps {
 export default function Category(props:CategoryProps){
     const {name = "undefined", list = {}, size, onUpdate} = props;
     if(typeof size !== "number")
-        throw new TypeError("Need to know the size of the Category!");
+        throw new TypeError("Size must be a number!");
     if(typeof onUpdate !== "function")
         throw new TypeError("Update must be a function!");
 
@@ -54,7 +55,7 @@ export default function Category(props:CategoryProps){
             borderBottomWidth: 0
         },
         titleText: {
-            fontSize: 1.2, //em
+            fontSize: fontSize(1.2, size),
             textAlign: "center",
             flexGrow: 1,
             lineHeight: BUTTON_HEIGHT

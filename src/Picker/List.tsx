@@ -8,6 +8,7 @@ import Checkbox from 'expo-checkbox';
 
 import {BUTTON_HEIGHT} from "../Constants"
 import Card from "./Card";
+import { fontSize } from "../Util";
 
 interface ListProps {
     name:string
@@ -19,7 +20,7 @@ interface ListProps {
 export default function List(props:ListProps){
     const {size, list = [], onUpdate, name = "undefined"} = props;
     if(typeof size !== "number")
-        throw new TypeError("Need to know the size of the Category!");
+        throw new TypeError("Size must be a number!");
     if(typeof onUpdate !== "function")
         throw new TypeError("Update must be a function!");
 
@@ -54,7 +55,7 @@ export default function List(props:ListProps){
             borderBottomWidth: 0
         },
         titleText: {
-            fontSize: 1.2, //em
+            fontSize: fontSize(1.2, size),
             textAlign: "center",
             flexGrow: 1,
             lineHeight: BUTTON_HEIGHT
