@@ -36,7 +36,6 @@ export default function Category(props:CategoryProps){
             width: "50%",
             height: BUTTON_HEIGHT,
             flexGrow: 1,
-            //display: "block",
         },
         column: {
             position: 'absolute',
@@ -113,7 +112,7 @@ export default function Category(props:CategoryProps){
                 </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
-            <ScrollView style={styles.column}>
+            <ScrollView style={styles.column} contentContainerStyle={{flexGrow: 1}}> 
                 {iterate()}
             </ScrollView>
         </View>

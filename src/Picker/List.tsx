@@ -7,7 +7,7 @@ import {View, Text, FlatList, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
 import {BUTTON_HEIGHT} from "../Constants"
-import Card from "./Card";
+import ListItem from "./ListItem";
 import { fontSize } from "../Util";
 
 interface ListProps {
@@ -33,10 +33,8 @@ export default function List(props:ListProps){
 
     const styles = StyleSheet.create({
         wrapper: {
-            width: "50%",
             height: BUTTON_HEIGHT,
             flexGrow: 1,
-            //display: "block",
         },
         column: {
             position: 'absolute',
@@ -111,7 +109,7 @@ export default function List(props:ListProps){
             <FlatList data={list}
                     renderItem={
                         (it)=>{
-                            return (<Card value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} />)
+                            return (<ListItem value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} />)
                         }
                     }
                 />
