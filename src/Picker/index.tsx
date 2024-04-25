@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Category from "./Category";
 
-import { RATIO, BUTTON_DEFAULT, BUTTON_WIDTH, BUTTON_HEIGHT } from "../Constants";
+import { RATIO, BUTTON_DEFAULT, BUTTON_WIDTH } from "../Constants";
 
 interface PickerProps {
     size:number
