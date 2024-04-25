@@ -40,7 +40,7 @@ class ImportStream extends Transform {
     processLine(line) {
         try {
             //Remove Comma from line
-            if (line.charAt(-1) === ",")
+            if (line[line.length - 1] == ",")
                 line = line.slice(0, -1);
             this.processCard(JSON.parse(line));
         }

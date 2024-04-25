@@ -77,12 +77,22 @@ class OptimizeStream extends Transform {
      * @param {Function} callback 
      */
     _flush(callback){
-        const Planechase = {
-            Plane: clean(this.planechase[PLANE]),
-            Phenomenon: clean(this.planechase[PHENOMENON])
+        const Planechase = [
+            {
+                name: "Plane",
+                value: clean(this.planechase[PLANE])
+            },
+            {
+                name: "Phenomenon",
+                value: clean(this.planechase[PHENOMENON])
+            }
+        ];
+
+        const Bounty = {
+            name: "Bounty",
+            value: clean(this.bounty)
         };
 
-        const Bounty = clean(this.bounty);
         const Unknown = clean(this.unknown);
 
         this.push(JSON.stringify({Planechase, Bounty, Unknown}, null, 2));
