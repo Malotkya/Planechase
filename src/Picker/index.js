@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import List from "./Category";
 
-
 import { RATIO, BUTTON_DEFAULT, BUTTON_WIDTH, BUTTON_HEIGHT } from "../Constants";
 
 /** Card Picker
@@ -20,7 +19,7 @@ export default function CardPicker(props){
     const [cards, setCards] = useState(undefined);
     const [visible, setVisible] = useState(false);
 
-    console.log(props.init);
+    console.debug(JSON.parse(props.init, null, 2));
 
     if(typeof props.size === "undefined")
         throw new TypeError("Need to know the size of the card picker!");
@@ -72,14 +71,14 @@ export default function CardPicker(props){
         setCards((cards)=>{
             const c = {...cards};
             c[name] = value;
-            AsyncStorage.setItem("state", JSON.stringify(getList(c).map(card=>card.name)));
+            AsyncStorage.setItem("Planechase", JSON.stringify(getList(c).map(card=>card.name)));
             return c;
         });
     }
     
     useEffect(()=>{
         if(cards === undefined){
-            AsyncStorage.getItem("state").then(value=>{
+            AsyncStorage.getItem("Planechase").then(value=>{
 
                 if(value !== null) {
                     value = JSON.parse(value);
@@ -87,11 +86,15 @@ export default function CardPicker(props){
                     value = [];
                 }
 
-                for(let name in props.init){
-                    props.init[name] = props.init[name].map(card=>{
-                        card.use = value.length === 0 || value.includes(card.name);
-                        return card;
-                    });
+                for(let cat of Object.getOwnPropertyNames(props.init)){
+                    const list = props.init[cat];
+
+                    for(let name of Object.getOwnPropertyNames(list)) {
+                        props.init[cat] = list[name].map(card=>{
+                            card.use = value.length === 0 || value.includes(card.name);
+                            return card;
+                        });
+                    }
                 }
 
                 setCards(props.init);

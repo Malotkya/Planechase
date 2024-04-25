@@ -3,7 +3,7 @@
  * @author Alex Malotky
  */
 import {useState, useEffect} from "react"
-import {ScrollView, View, Text, FlatList, StyleSheet} from "react-native";
+import {View, Text, FlatList, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
 import {BUTTON_HEIGHT} from "../Constants"

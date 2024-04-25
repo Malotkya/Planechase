@@ -12,6 +12,8 @@ import CardPicker from "./src/Picker"
 import Deck from "./src/Deck";
 import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
 
+import allCards from "./cards.json";
+
 if(Platform.OS === "web")
     document.body.style.backgroundColor = "black";
 
@@ -104,7 +106,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <CardPicker callback={shuffleCards} size={size}/>
+            <CardPicker callback={shuffleCards} size={size} init={allCards.Planechase}/>
             <Deck list={list} size={size} shuffle={()=>shuffleCards(list)}/>
             <View style={styles.footer}>
               <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
