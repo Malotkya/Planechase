@@ -30,7 +30,7 @@ export default function List(props:ListProps){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
-    const HEIGHT = (list.length + 1) * BUTTON_HEIGHT;
+    const HEIGHT = (list.length * fontSize(2.2, size)) + BUTTON_HEIGHT;
 
     const styles = StyleSheet.create({
         wrapper: {
