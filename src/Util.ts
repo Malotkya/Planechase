@@ -1,3 +1,7 @@
+/** /src/Util
+ * 
+ * @author Alex Malotky
+ */
 import { MAX_SIZE, DEFAULT_FONT_SIZE } from "./Constants";
 
 /** Response Font Size
@@ -7,11 +11,11 @@ import { MAX_SIZE, DEFAULT_FONT_SIZE } from "./Constants";
  * 
  * If the app is at max size 1 = DEFAULT_FONT_SIZE.
  * 
- * @param size 
- * @param width 
- * @returns 
+ * @param {number} size 
+ * @param {number} width 
+ * @returns  {number}
  */
-export function fontSize(size:number, width:number = MAX_SIZE) {
+export function fontSize(size:number, width:number = MAX_SIZE):number{
     const ratio = (DEFAULT_FONT_SIZE * width) / MAX_SIZE;
     return Math.floor(ratio * size);
 }
