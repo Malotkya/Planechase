@@ -57,7 +57,7 @@ export default function List(props:ListProps){
             borderBottomWidth: 0
         },
         titleText: {
-            fontSize: fontSize(1.2, size),
+            fontSize: fontSize(1.3, size),
             textAlign: "center",
             flexGrow: 1,
             lineHeight: BUTTON_HEIGHT

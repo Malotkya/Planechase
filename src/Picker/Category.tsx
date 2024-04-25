@@ -58,10 +58,11 @@ export default function Category(props:CategoryProps){
             borderBottomWidth: 0
         },
         titleText: {
-            fontSize: fontSize(1.2, size),
+            fontSize: fontSize(1.5, size),
             textAlign: "center",
             flexGrow: 1,
-            lineHeight: BUTTON_HEIGHT
+            lineHeight: BUTTON_HEIGHT,
+            fontWeight: "bold"
         },
         checkbox: {
             justifyContent: "center",
