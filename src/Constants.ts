@@ -16,6 +16,9 @@ export const MAX_SIZE = 850;//px
 export const BUTTON_WIDTH = 100;//px
 export const BUTTON_HEIGHT = 35;//px
 
+//Default Font Size
+export const DEFAULT_FONT_SIZE = 12;//px
+
 //Default Button Styling
 export const BUTTON_DEFAULT:TextStyle = {
     width: BUTTON_WIDTH,
