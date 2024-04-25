@@ -6,7 +6,7 @@ import React, {useState} from "react"
 import {ScrollView, View, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
-import {BUTTON_HEIGHT} from "../Constants"
+import {BUTTON_HEIGHT, BUTTON_WIDTH, RATIO} from "../Constants"
 import {fontSize} from "../Util";
 import List from "./List";
 
@@ -30,6 +30,7 @@ export default function Category(props:CategoryProps){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
+    const HEIGHT = Math.floor((size - BUTTON_WIDTH) * RATIO) - BUTTON_HEIGHT;
 
     const styles = StyleSheet.create({
         wrapper: {
@@ -37,7 +38,7 @@ export default function Category(props:CategoryProps){
             display: "block" //TODO: Find way to not break display without this!
         },
         scrollOuter: {
-            height: size,
+            height: HEIGHT,
             width: "100%",
             backgroundColor: "white",
             borderColor: "black",

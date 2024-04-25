@@ -28,6 +28,8 @@ export default function CardPicker(props:PickerProps){
     const [cards, setCards] = useState<Array<GameVersion>>([]);
     const [visible, setVisible] = useState(false);
 
+    const WIDTH = size - BUTTON_WIDTH;
+
     const styles = StyleSheet.create({
         wrapper: {
             width: size,
@@ -36,15 +38,18 @@ export default function CardPicker(props:PickerProps){
             flexWrap: 'nowrap',
             zIndex: 99,
             elevation: 99,
-            height: 0,
-            overflow: "visible"
+            height: 0
         },
         button: BUTTON_DEFAULT,
         view: {
             display: visible? "flex": "none",
+            position: "absolute",
+            left: BUTTON_WIDTH,
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
+            width: WIDTH,
+            overflow: "hidden"
         }
     });
 
@@ -59,7 +64,7 @@ export default function CardPicker(props:PickerProps){
 
                 for(let card of list.value[index]) {
                     if(card.use)
-                        output.push(card);
+                                output.push(card);
                 }
             }
         }

@@ -26,8 +26,7 @@ export default function ListItem(props:CardProps){
             padding: "3px",
             flexDirection: "row",
             borderBottomColor: "black",
-            borderBottomWidth: 1,
-            height: BUTTON_HEIGHT
+            borderBottomWidth: 1
         },
         text: {
             paddingLeft: "5px"
