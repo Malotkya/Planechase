@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import {useState, useEffect, Component} from "react";
+import {useState, useEffect} from "react";
 import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -57,14 +57,9 @@ export default function CardPicker(props:PickerProps){
         for(let list of state!){
             for(let index in list.value){
 
-                for(let name in list.value[index]) {
-                    const set = list.value[name];
-                    if(set){
-                        for(let card of set){
-                            if(card.use)
-                                output.push(card);
-                        }
-                    }
+                for(let card of list.value[index]) {
+                    if(card.use)
+                        output.push(card);
                 }
             }
         }
