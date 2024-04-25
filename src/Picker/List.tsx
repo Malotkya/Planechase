@@ -9,12 +9,19 @@ import Checkbox from 'expo-checkbox';
 import {BUTTON_HEIGHT} from "../Constants"
 import Card from "./Card";
 
-/**
- * 
- * @param {{name:string, list:Array, size:number, update:Function}} props 
- * @returns {Component}
- */
-export default function List(props){
+interface ListProps {
+    name:string
+    onUpdate:(list:Array<CardBase>)=>void
+    list:Array<CardBase>
+    size:number
+}
+
+export default function List(props:ListProps){
+    const {size, list = [], onUpdate, name = "undefined"} = props;
+    if(typeof size !== "number")
+        throw new TypeError("Need to know the size of the Category!");
+    if(typeof onUpdate !== "function")
+        throw new TypeError("Update must be a function!");
 
     /** State Meaning:
      * -1: Mix of true/false amongst the cards
@@ -23,22 +30,16 @@ export default function List(props){
      */
     const [state, setState] = useState(-1);
 
-    if(typeof props.size !== "number")
-        throw new TypeError("Need to know the size of the List!");
-
-    const list = props.list || [];
-    const name = props.name || "undefined";
-
     const styles = StyleSheet.create({
         wrapper: {
             width: "50%",
             height: BUTTON_HEIGHT,
             flexGrow: 1,
-            display: "block",
+            //display: "block",
         },
         column: {
             position: 'absolute',
-            height: props.size,
+            height: size,
             width: "100%",
             backgroundColor: "white",
             borderColor: "black",
@@ -53,7 +54,7 @@ export default function List(props){
             borderBottomWidth: 0
         },
         titleText: {
-            fontSize: "1.2em",
+            fontSize: 1.2, //em
             textAlign: "center",
             flexGrow: 1,
             lineHeight: BUTTON_HEIGHT
@@ -64,17 +65,17 @@ export default function List(props){
         }
     });
 
-    const updateList = value =>{
+    const updateList = (value:boolean) =>{
         for(let card of list)
             card.use = value;
         setState(+ value);
-        props.update(name, list)
+        onUpdate(list);
     }
 
-    const updateCard = (index, value) =>{
+    const updateCard = (index:number, value:boolean) =>{
         setState(-1);
         list[index].use = value;
-        props.update(name, list);
+        onUpdate(list);
     }
 
     useEffect(()=>{
@@ -109,7 +110,7 @@ export default function List(props){
             <FlatList data={list}
                     renderItem={
                         (it)=>{
-                            return (<Card value={it.item} onValueChange={(value)=>updateCard(it.index, value)} key={it.index} />)
+                            return (<Card value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} />)
                         }
                     }
                 />

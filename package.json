@@ -7,7 +7,6 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "set NODE_OPTIONS=--openssl-legacy-provider && expo start --web",
-
     "deploy": "set NODE_OPTIONS=--openssl-legacy-provider && npx expo export:web && firebase deploy",
     "scryfall": "node ./util/update.js"
   },
@@ -24,7 +23,8 @@
     "webpack-dev-server": "^3",
     "expo-checkbox": "~2.4.0",
     "expo-screen-orientation": "~6.0.6",
-    "expo-device": "~5.4.0"
+    "expo-device": "~5.4.0",
+    "@react-native-picker/picker": "2.4.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

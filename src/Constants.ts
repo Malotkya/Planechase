@@ -2,6 +2,7 @@
  * 
  * @author Alex Malotky
  */
+import { TextStyle } from "react-native";
 
 //Ratio to switch from Width to Height
 export const RATIO = 0.69841;
@@ -16,7 +17,7 @@ export const BUTTON_WIDTH = 100;//px
 export const BUTTON_HEIGHT = 35;//px
 
 //Default Button Styling
-export const BUTTON_DEFAULT = {
+export const BUTTON_DEFAULT:TextStyle = {
     width: BUTTON_WIDTH,
     height: BUTTON_HEIGHT,
     flexGrow: 1,

@@ -48,7 +48,7 @@ function forceLandscape() {
 
 export default function App() {
 
-    const [list, setList] = useState([]);
+    const [list, setList] = useState<Array<CardBase>>([]);
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
 
@@ -73,7 +73,7 @@ export default function App() {
      * 
      * @param {Array<Cards>} list 
      */
-    const shuffleCards = list => {
+    const shuffleCards = (list:Array<CardBase>) => {
         const newList = [];
         const input = JSON.parse(JSON.stringify(list));
 

@@ -3,27 +3,31 @@
  * @author Alex Malotky
  */
 import {useState, useEffect} from 'react';
-import {StyleSheet, Image, Text, View} from 'react-native';
+import {StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 
 import { RATIO } from '../Constants';
 const OFFSET = -2;
 
-export default function Card(props){
+interface cardProps {
+    card:CardBase
+    size:number
+}
+
+export default function Card(props:cardProps){
+    const {card = {}, size} = props;
+    if(typeof size !== "number")
+        throw new TypeError("Need to know the size of the Category!");
 
     const [visible, setVisible] = useState(true);
-
-    if(typeof props.size !== "number")
-        throw new TypeError("Need to know the size of the card!");
     
     const width = props.size;
     const height = Math.ceil(props.size * RATIO);
-
     const {
         name = "undefined",
         type = "undefined",
         text = "undefined",
         image_uri = ""
-    } = props.card || {};
+    } = card as CardBase;
 
     const styles = StyleSheet.create({
         view: {
@@ -55,7 +59,7 @@ export default function Card(props){
             transform: [{rotate: '90deg'}],
             width: height,
             height: width,
-            display: visible? "block": "none"
+            display: visible? undefined/*"Block"*/: "none"
         }
     });
 
@@ -68,11 +72,11 @@ export default function Card(props){
     }, [props.card])
 
     return (
-        <View style={styles.view} onClick={flip}>
+        <TouchableOpacity  style={styles.view} onPress={flip}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.type}>{type}</Text>
             <Text style={styles.text}>{text.replace("\n", "\n\n")}</Text>
             <Image style={styles.image} source={{uri:image_uri}} />
-        </View>
+        </TouchableOpacity >
     )
 };
