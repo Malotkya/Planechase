@@ -34,16 +34,19 @@ export default function Category(props:CategoryProps){
     const styles = StyleSheet.create({
         wrapper: {
             width: "50%",
-            height: BUTTON_HEIGHT,
-            flexGrow: 1,
+            display: "block" //TODO: Find way to not break display without this!
         },
-        column: {
-            position: 'absolute',
+        scrollOuter: {
             height: size,
             width: "100%",
             backgroundColor: "white",
             borderColor: "black",
-            borderWidth: 1,
+            borderWidth: 1
+        },
+        scrollInner: {
+            flexGrow: 1,
+            display: "flex",
+            minHeight: "min-content",
         },
         title: {
             flexDirection: "row",
@@ -112,7 +115,7 @@ export default function Category(props:CategoryProps){
                 </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
-            <ScrollView style={styles.column} contentContainerStyle={{flexGrow: 1}}> 
+            <ScrollView style={styles.scrollOuter} contentContainerStyle={styles.scrollInner}> 
                 {iterate()}
             </ScrollView>
         </View>

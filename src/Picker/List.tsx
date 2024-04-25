@@ -30,11 +30,15 @@ export default function List(props:ListProps){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
+    const HEIGHT = (list.length + 1) * BUTTON_HEIGHT;
 
     const styles = StyleSheet.create({
         wrapper: {
-            height: BUTTON_HEIGHT,
+            flex: 1,
+            display: "flex",
             flexGrow: 1,
+            minHeight: HEIGHT,
+            maxHeight: HEIGHT
         },
         column: {
             position: 'absolute',
@@ -106,7 +110,7 @@ export default function List(props:ListProps){
                 </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
-            <FlatList data={list}
+            <FlatList data={list} style={{overflow:"visible"}}
                     renderItem={
                         (it)=>{
                             return (<ListItem value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} />)
