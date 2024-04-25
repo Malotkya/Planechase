@@ -4,15 +4,14 @@
  */
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
-import { StyleSheet, View, Linking, Text, Button, useWindowDimensions, Platform } from 'react-native';
+import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as Device from 'expo-device'
 
-import CardPicker from "./src/Picker"
-import Deck from "./src/Deck";
 import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
 
 import allCards from "./cards.json";
+import Planechase from './src/Planechase';
 
 if(Platform.OS === "web")
     document.body.style.backgroundColor = "black";
@@ -48,7 +47,7 @@ function forceLandscape() {
 
 export default function App() {
 
-    const [list, setList] = useState<Array<CardBase>>([]);
+    
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
 
@@ -69,22 +68,7 @@ export default function App() {
         }
     });
 
-    /** Shuffle Cards
-     * 
-     * @param {Array<Cards>} list 
-     */
-    const shuffleCards = (list:Array<CardBase>) => {
-        const newList = [];
-        const input = JSON.parse(JSON.stringify(list));
-
-        while(input.length > 0){
-            let index = Math.floor(Math.random() * input.length);
-            newList.push(input[index]);
-            input.splice(index, 1);
-        }
-
-        setList(newList);
-    }
+    
 
     /** Resize Effect
      * 
@@ -106,8 +90,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <CardPicker callback={shuffleCards} size={size} init={allCards.Planechase}/>
-            <Deck list={list} size={size} shuffle={()=>shuffleCards(list)}/>
+            <Planechase size={size} init={allCards.Planechase} />
             <View style={styles.footer}>
               <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
               <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
@@ -115,5 +98,6 @@ export default function App() {
             </View>
             <StatusBar style="dark"/>
         </View>
-    );
+        
+    )
 }
