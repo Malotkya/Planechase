@@ -14,7 +14,7 @@ interface CardProps {
 export default function Card(props:CardProps){
     const {value = {}, onValueChange} = props;
     if(typeof onValueChange !== "function")
-        throw new TypeError("Update must be a function!");
+        throw new TypeError("onValueChange must be a function!");
 
     const {name = "undefined", use = false} = value as CardBase;
 

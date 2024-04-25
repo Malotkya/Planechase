@@ -17,7 +17,7 @@ interface DeckProps {
 export default function Deck(props:DeckProps){
     const {list = [], size, shuffle} = props;
     if(typeof size !== "number")
-        throw new TypeError("Need to know the size of the Category!");
+        throw new TypeError("Size must be a number!");
     if(typeof shuffle !== "function")
         throw new TypeError("Update must be a function!");
 

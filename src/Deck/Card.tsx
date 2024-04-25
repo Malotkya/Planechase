@@ -16,7 +16,7 @@ interface cardProps {
 export default function Card(props:cardProps){
     const {card = {}, size} = props;
     if(typeof size !== "number")
-        throw new TypeError("Need to know the size of the Category!");
+        throw new TypeError("Size must be a number!");
 
     const [visible, setVisible] = useState(true);
     

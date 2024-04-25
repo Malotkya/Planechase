@@ -19,7 +19,7 @@ interface PickerProps {
 export default function CardPicker(props:PickerProps){
     const {size, callback, init} = props;
     if(typeof size !== "number")
-        throw new TypeError("Need to know the size of the card picker!");
+        throw new TypeError("Size must be a number!");
     if(typeof callback !== "function")
         throw new TypeError("Callback must be a function!");
     if(typeof init !== "object")
@@ -48,8 +48,7 @@ export default function CardPicker(props:PickerProps){
         }
     });
 
-    const LIST_SIZE = Math.floor((size-BUTTON_WIDTH) * RATIO)-BUTTON_HEIGHT;
-    console.debug(JSON.stringify(init, null, 2));
+    //const LIST_SIZE = Math.floor((size-BUTTON_WIDTH) * RATIO)-BUTTON_HEIGHT;
 
     const getList = (state?:Array<GameVersion>):Array<CardBase> =>{
         const output:Array<CardBase> = [];
@@ -116,7 +115,7 @@ export default function CardPicker(props:PickerProps){
                 <Text style={styles.button}>Card List</Text>
             </TouchableOpacity>
             <View style={styles.view}>
-                {cards?.map((value, index)=>{
+                {cards.map((value, index)=>{
                     return <Category name={value.name}
                         list={value.value} key={index} size={size}
                         onUpdate={(update:CardList)=>updateState(value.name, update)} />
