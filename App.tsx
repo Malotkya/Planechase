@@ -6,10 +6,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
 import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as Device from 'expo-device'
 
 import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
+import { fontSize } from './src/Util';
 import Planechase from './src/Planechase';
 import Bounty from './src/Bounty';
 
@@ -49,7 +51,7 @@ function forceLandscape() {
 }
 
 export default function App() {
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState("0");
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
 
@@ -59,10 +61,10 @@ export default function App() {
 
     const getCurrent = ():React.JSX.Element => {
         switch (current) {
-            case 0:
+            case "0":
                 return PLANECHASE;
 
-            case 1:
+            case "1":
                 return BOUNTY;
         }
 
@@ -77,9 +79,16 @@ export default function App() {
             justifyContent: 'center'
         },
         header: {
+            paddingLeft: BUTTON_WIDTH,
+            width: size,
             display: "flex",
-            alignContent: "center",
-            flexDirection: "row"
+            justifyContent: "space-around",
+            flexDirection: "row",
+            marginBottom: 5
+        },
+        title: {
+            fontSize: fontSize(2, size),
+            color: "white"
         },
         footer: {
           paddingLeft: BUTTON_WIDTH,
@@ -90,6 +99,29 @@ export default function App() {
           justifyContent: "space-around",
         }
     });
+
+    /** Update Current Selected
+     * 
+     * Sets value in AsyncStorage
+     * 
+     * @param {string} value 
+     * @param {number} index 
+     */
+    const updateCurrent = (value:string, index:number) => {
+        AsyncStorage.setItem("current", value);
+        setCurrent(value);
+    }
+
+    /** Remember Current Selected
+     * 
+     * Gets current from AsyncStorage on start.
+     */
+    useEffect(()=>{
+        AsyncStorage.getItem("current").then((value)=>{
+            if(value)
+                setCurrent(value);
+        })
+    })
 
     /** Resize Effect
      * 
@@ -109,11 +141,13 @@ export default function App() {
         }
     }, [height, width]);
 
+    
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={{color:"white"}}>MTG Companion App</Text>
-                <Picker selectedValue={current} onValueChange={(itemValue, itemIndex)=>setCurrent(itemIndex)}>
+                <Text style={styles.title}>MTG Companion App</Text>
+                <Picker selectedValue={current} onValueChange={updateCurrent}>
                     <Picker.Item label="Planechase" value="0"/>
                     <Picker.Item label="Bounty" value="1" />
                 </Picker>
