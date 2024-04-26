@@ -91,18 +91,16 @@ function download(uri, size){
          */
         const update = (value, refresh=true) => {
             const percent = Math.round((value / size) * 1000) / 10;
-            process.stdout.write(`Progress: ${percent}%\n`);
-
-            if(refresh)
-                process.stdout.write('\u001b[1A');
+            process.stdout.write(`\u001b[1AProgress: ${percent}% \n`); 
         }
 
+        process.stdout.write('\n');
         https.get(uri, response=>{
             response.pipe(new ImportStream())
                 .on("log", update)
                 .on("error", reject)
             .pipe( new OptimizeStream())
-                .on("log", ()=>update(size, false))
+                .on("log", console.log)
                 .on("error", reject)
             .pipe(fileStream)
                 .on("error", reject)
