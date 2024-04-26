@@ -13,6 +13,7 @@ interface CardProps {
 }
 
 export default function ListItem(props:CardProps){
+    //Validate props
     const {value = {}, onValueChange} = props;
     if(typeof onValueChange !== "function")
         throw new TypeError("onValueChange must be a function!");
@@ -21,6 +22,9 @@ export default function ListItem(props:CardProps){
     const [state, setState] = useState(use);
     
 
+    /** Picker List Item Styling
+     * 
+     */
     const styles = StyleSheet.create({
         touch: {
             padding: "3px",
@@ -33,11 +37,17 @@ export default function ListItem(props:CardProps){
         }
     })
 
+    /** Toggle and Update Card
+     * 
+     */
     const update = () => {
         setState(!state);
         onValueChange(!state);
     }
 
+    /** Update state if item is changed externally.
+     * 
+     */
     useEffect(()=>{
         setState(use);
     }, [use])

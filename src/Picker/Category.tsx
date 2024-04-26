@@ -18,6 +18,7 @@ interface CategoryProps {
 }
 
 export default function Category(props:CategoryProps){
+    //Check Props
     const {name = "undefined", list = {}, size, onUpdate} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
@@ -32,6 +33,9 @@ export default function Category(props:CategoryProps){
     const [state, setState] = useState(-1);
     const HEIGHT = Math.floor((size - BUTTON_WIDTH) * RATIO) - BUTTON_HEIGHT;
 
+    /** Category Styling
+     * 
+     */
     const styles = StyleSheet.create({
         wrapper: {
             width: "50%",
@@ -70,7 +74,7 @@ export default function Category(props:CategoryProps){
         }
     });
 
-    /** Update Category
+    /** Update Entire Category
      * 
      * @param {boolean} value 
      */
@@ -96,6 +100,10 @@ export default function Category(props:CategoryProps){
         onUpdate(list);
     }
 
+    /** Iterate over List / Create JSX.Element
+     * 
+     * @returns {Array<React.JSX.Element>}
+     */
     const iterate = () => {
         const output:Array<React.JSX.Element> = [];
 

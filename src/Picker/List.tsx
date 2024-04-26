@@ -18,6 +18,7 @@ interface ListProps {
 }
 
 export default function List(props:ListProps){
+    //Validate Props
     const {size, list = [], onUpdate, name = "undefined"} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
@@ -32,6 +33,9 @@ export default function List(props:ListProps){
     const [state, setState] = useState(-1);
     const HEIGHT = (list.length * fontSize(2.2, size)) + BUTTON_HEIGHT;
 
+    /** Picker Sub List Styling
+     * 
+     */
     const styles = StyleSheet.create({
         wrapper: {
             flex: 1,
@@ -68,6 +72,10 @@ export default function List(props:ListProps){
         }
     });
 
+    /** Update Sub List 
+     * 
+     * @param value 
+     */
     const updateList = (value:boolean) =>{
         for(let card of list)
             card.use = value;
@@ -75,12 +83,23 @@ export default function List(props:ListProps){
         onUpdate(list);
     }
 
+    /** Update Single Card
+     * 
+     * @param {number} index 
+     * @param {boolean} value 
+     */
     const updateCard = (index:number, value:boolean) =>{
         setState(-1);
         list[index].use = value;
         onUpdate(list);
     }
 
+    /** Init Effect
+     * 
+     * Sets Entire list to true if card.use is undefined
+     * and sets inital state based on list use settings.
+     * 
+     */
     useEffect(()=>{
         if(list.length > 0){
             let initState = list[0].use;

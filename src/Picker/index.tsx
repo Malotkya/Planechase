@@ -18,6 +18,7 @@ interface PickerProps {
 }
 
 export default function CardPicker(props:PickerProps){
+    //Check Props
     const {size, callback, init, storageKey = String(Math.random())} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
@@ -31,6 +32,9 @@ export default function CardPicker(props:PickerProps){
 
     const WIDTH = size - BUTTON_WIDTH;
 
+    /** Card Picker Styling
+     * 
+     */
     const styles = StyleSheet.create({
         wrapper: {
             width: size,
@@ -54,8 +58,13 @@ export default function CardPicker(props:PickerProps){
         }
     });
 
-    //const LIST_SIZE = Math.floor((size-BUTTON_WIDTH) * RATIO)-BUTTON_HEIGHT;
-
+    /** Get List of Selected Cqrds
+     * 
+     * Uses eather the state stored or state passed in.
+     * 
+     * @param {Array<GameVersion>} state 
+     * @returns {Array<CardBase>}
+     */
     const getList = (state?:Array<GameVersion>):Array<CardBase> =>{
         const output:Array<CardBase> = [];
         state = state || cards;
@@ -73,6 +82,13 @@ export default function CardPicker(props:PickerProps){
         return output;
     }
 
+    /** Update List by Name in State.
+     * 
+     * Stores update in AsyncStorage
+     * 
+     * @param {string} name 
+     * @param {CardList} value 
+     */
     const updateState = (name:string, value:CardList) => {
         setCards((cards)=>{
             const c = Array.from(cards!);
@@ -85,6 +101,10 @@ export default function CardPicker(props:PickerProps){
         });
     }
     
+    /** Cards List State Change Effect
+     * 
+     * Restores state from AsyncStorage on first call.
+     */
     useEffect(()=>{
         if(cards.length === 0){
             AsyncStorage.getItem(storageKey).then(buffer=>{
@@ -106,6 +126,9 @@ export default function CardPicker(props:PickerProps){
         }
     }, [cards]);
 
+    /** Flip Visbility
+     * 
+     */
     const flip = () =>{
         setVisible(!visible);
     }
