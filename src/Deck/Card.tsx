@@ -5,23 +5,30 @@
 import {useState, useEffect} from 'react';
 import {StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 
-import { RATIO } from '../Constants';
+import { INVERTSE_RATIO, RATIO } from '../Constants';
 const OFFSET = -2;
 
 interface cardProps {
     card:CardBase
     size:number
+    horizontal:boolean
 }
 
 export default function Card(props:cardProps){
-    const {card = {}, size} = props;
+    //Validate props
+    const {card = {}, size, horizontal = true} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
 
     const [visible, setVisible] = useState(true);
     
-    const width = props.size;
-    const height = Math.ceil(props.size * RATIO);
+    //Calculate Dimensions
+    const width  = horizontal? size
+                             : Math.ceil(size / 2);
+    const height = horizontal? Math.ceil(size * RATIO)
+                             : Math.ceil(width * INVERTSE_RATIO)
+
+    //Validate Card
     const {
         name = "undefined",
         type = "undefined",
@@ -29,6 +36,9 @@ export default function Card(props:cardProps){
         image_uri = ""
     } = card as CardBase;
 
+    /** Card Styling
+     * 
+     */
     const styles = StyleSheet.create({
         view: {
             width: width,
@@ -53,20 +63,26 @@ export default function Card(props:cardProps){
         },
         image: {
             position: 'absolute',
-            left: width+OFFSET,
+            left: horizontal? width+OFFSET: OFFSET,
             top: OFFSET,
             transformOrigin: 'top left',
-            transform: [{rotate: '90deg'}],
-            width: height,
-            height: width,
+            transform: horizontal? [{rotate: '90deg'}]: undefined,
+            width: horizontal? height: width,
+            height: horizontal? width: height,
             display: visible? undefined/*"Block"*/: "none"
         }
     });
 
+    /** Flip Visibility
+     * 
+     */
     const flip = () =>{
         setVisible(!visible);
     }
 
+    /** Reset Visibility if Card Changes
+     * 
+     */
     useEffect(()=>{
         setVisible(true)
     }, [props.card])
