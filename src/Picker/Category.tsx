@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {ScrollView, View, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
@@ -116,6 +116,49 @@ export default function Category(props:CategoryProps){
 
         return output;
     }
+
+    /** Init Effect
+     * 
+     * Sets Entire list to true if card.use is undefined
+     * and sets inital state based on list use settings.
+     * 
+     */
+    useEffect(()=>{
+        const states:Array<number> = [];
+
+        //Get init states of all lists
+        for(let name of Object.getOwnPropertyNames(list)){
+            let state:boolean|undefined = list[name][0].use
+
+            for(let card of list[name]){
+                if(card.use !== state){
+                    state = undefined
+                    break;
+                }
+            }
+
+            if(state === undefined){
+                states.push(-1)
+            } else {
+                states.push(+state)
+            }
+        }
+
+        //Check if all states are the same.
+        if(states.length > 0){
+
+            let iniState:number|undefined = states[0];
+            for(let i=1; i<states.length&&iniState!==undefined; i++){
+                if(states[i] !== iniState) {
+                    iniState = undefined;
+                }
+            }
+            
+            if(iniState){
+                setState(iniState);
+            }
+        }
+    });
 
     return (
         <View style={styles.wrapper}>
