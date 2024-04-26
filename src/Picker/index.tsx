@@ -8,16 +8,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Category from "./Category";
 
-import { RATIO, BUTTON_DEFAULT, BUTTON_WIDTH } from "../Constants";
+import { BUTTON_DEFAULT, BUTTON_WIDTH } from "../Constants";
 
 interface PickerProps {
     size:number
     callback:Function,
     init: Array<GameVersion>
+    storageKey?:string
 }
 
 export default function CardPicker(props:PickerProps){
-    const {size, callback, init} = props;
+    const {size, callback, init, storageKey = String(Math.random())} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof callback !== "function")
@@ -79,14 +80,14 @@ export default function CardPicker(props:PickerProps){
                 if(game.name === name)
                     game.value = value;
             }
-            AsyncStorage.setItem("Planechase", JSON.stringify(getList(c).map(card=>card.name)));
+            AsyncStorage.setItem(storageKey, JSON.stringify(getList(c).map(card=>card.name)));
             return c;
         });
     }
     
     useEffect(()=>{
         if(cards.length === 0){
-            AsyncStorage.getItem("Planechase").then(buffer=>{
+            AsyncStorage.getItem(storageKey).then(buffer=>{
                 const value:Array<string> = buffer? JSON.parse(buffer): [];
 
                 for(let list of init){
