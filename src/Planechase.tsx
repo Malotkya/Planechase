@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {View, StyleProp, ViewStyle} from "react-native";
+import {View} from "react-native";
 
 import CardPicker from "./Picker"
 import Deck from "./Deck";
@@ -32,7 +32,7 @@ export default function Planechase(props:PlanechaseProps) {
     
     return (
         <View>
-            <CardPicker callback={shuffleCards} size={size} init={init}/>
+            <CardPicker callback={shuffleCards} size={size} init={init} storageKey="planechase"/>
             <Deck list={list} size={size} shuffle={()=>shuffleCards(list)}/>
         </View> 
     );

@@ -32,7 +32,7 @@ export default function Bounty(props:BountyProps) {
     
     return (
         <View>
-            <CardPicker callback={shuffleCards} size={size} init={[init]}/>
+            <CardPicker callback={shuffleCards} size={size} init={[init]} storageKey="bounty"/>
             <Deck list={list} size={size} shuffle={()=>shuffleCards(list)}/>
         </View> 
     );
