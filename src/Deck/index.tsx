@@ -12,17 +12,24 @@ interface DeckProps {
     list: Array<CardBase>,
     size:number,
     shuffle:Function
+    additonal?:CardBase
 }
 
 export default function Deck(props:DeckProps){
-    const {list = [], size, shuffle} = props;
+    //Validate Props
+    const {list = [], size, shuffle, additonal} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof shuffle !== "function")
         throw new TypeError("Update must be a function!");
 
     const [index, setIndex] = useState(0);
+    const horizontal = additonal === undefined
 
+
+    /** Deck Styling
+     * 
+     */
     const styles = StyleSheet.create({
         container: {
             display: "flex",
@@ -77,6 +84,21 @@ export default function Deck(props:DeckProps){
         }
     }, [index]);
 
+    /** Display Cards
+     * 
+     * Used to easily display card(s) depending on if there is an addional card or not.
+     * 
+     * @returns {Array<React.JSX.Element>}
+     */
+    const displayCards = ():Array<React.JSX.Element> =>{
+        const output = [<Card card={list[index]} size={size-BUTTON_WIDTH} horizontal={horizontal}/>];
+
+        if(additonal)
+            output.push(<Card card={additonal} size={size-BUTTON_WIDTH} horizontal={horizontal} />);
+
+        return output;
+    }
+
     /** Pre-load the next images on list change.
      * 
      */
@@ -87,8 +109,6 @@ export default function Deck(props:DeckProps){
         }
 
     }, [list])
-
-    
 
     return (
         <View style={styles.container}>
@@ -103,8 +123,8 @@ export default function Deck(props:DeckProps){
                     <Text style={styles.button}>Shuffle</Text>
                 </TouchableOpacity>
             </View>
-            <View>
-                <Card card={list[index]} size={size-BUTTON_WIDTH}/>
+            <View style={{flexDirection: "row"}}>
+                {displayCards()}
             </View>
         </View>
     );
