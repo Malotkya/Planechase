@@ -4,7 +4,7 @@
  */
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
-import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform } from 'react-native';
+import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ScreenOrientation from 'expo-screen-orientation';
@@ -18,35 +18,33 @@ import Bounty from './src/Bounty';
 import allCards from "./cards.json";
 
 
-if(Platform.OS === "web")
+//Platform Specific Settings
+if(Platform.OS === "web") {
     document.body.style.backgroundColor = "black";
-
-//Check for Apple iOS and attempt to lock landscape.
-switch(Device.osName){
-    case "iOS":
-    case "iPadOS":
-        ScreenOrientation.unlockAsync()
+    orientationAlert();
+} else if (Device.osName === "iOS" || Device.osName === "iPadOS") {
+    ScreenOrientation.unlockAsync()
             .then(forceLandscape)
             .catch(console.error);
-        break;
-
-    default: 
-        forceLandscape();
+} else {
+    forceLandscape();
 }
 
 /** Force Landscape on Phones and Tablets
  * 
  */
-function forceLandscape() {
-    switch(Device.deviceType){
-        case Device.DeviceType.PHONE:
-        case Device.DeviceType.TABLET:
-            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
-                .catch((error)=>{
-                    console.error(error);
-                    alert("Try using the app in landscape mode!");
-                });
-            break;
+async function forceLandscape() {
+    try {
+        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
+    } catch (e){
+        await orientationAlert();
+    }
+}
+
+async function orientationAlert() {
+    const orientation = await ScreenOrientation.getOrientationAsync();
+    if(orientation === ScreenOrientation.Orientation.PORTRAIT_DOWN || orientation === ScreenOrientation.Orientation.PORTRAIT_UP) {
+        Alert.alert("Try rotating the screen for a better experience!");
     }
 }
 

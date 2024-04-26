@@ -1,45 +1,52 @@
 {
-  "expo": {
-    "name": "Planechase",
-    "slug": "Planechase",
-    "version": "1.0.0",
-    "orientation": "landscape",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "requireFullScreen": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.zim563.Planechase"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "55fcb383-46b3-420f-b9e2-165e06966f24"
-      }
-    },
-    "plugins": [
-      [
-        "expo-screen-orientation",
-        {
-          "initialOrientation": "LANDSCAPE_LEFT"
-        }
-      ]
-    ]
-  }
+    "expo": {
+        "name": "Planechase",
+        "slug": "Planechase",
+        "version": "1.0.0",
+        "orientation": "landscape",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "dark",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "requireFullScreen": true,
+            "infoPlist": {
+                "UISupportedInterfaceOrientations": [
+                    "UIInterfaceOrientationLandscapeLeft",
+                    "UIInterfaceOrientationLandscapeRight"
+                ]
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.zim563.Planechase"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "55fcb383-46b3-420f-b9e2-165e06966f24"
+            }
+        },
+        "plugins": [
+            [
+                "expo-screen-orientation",
+                {
+                    "initialOrientation": "LANDSCAPE_LEFT"
+                }
+            ]
+        ]
+
+    }
 }
