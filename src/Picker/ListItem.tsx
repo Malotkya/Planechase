@@ -6,15 +6,19 @@ import {useState, useEffect} from "react";
 import {TouchableOpacity, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 import { BUTTON_HEIGHT } from "../Constants";
+import { fontSize } from "../Util";
 
 interface CardProps {
     value:CardBase
-    onValueChange: (value:boolean)=>void
+    onValueChange: (value:boolean)=>void,
+    size:number
 }
 
 export default function ListItem(props:CardProps){
     //Validate props
-    const {value = {}, onValueChange} = props;
+    const {value = {}, onValueChange, size} = props;
+    if(typeof size !== "number")
+            throw new TypeError("Size must be a number!");
     if(typeof onValueChange !== "function")
         throw new TypeError("onValueChange must be a function!");
     
@@ -33,7 +37,8 @@ export default function ListItem(props:CardProps){
             borderBottomWidth: 1
         },
         text: {
-            paddingLeft: "5px"
+            paddingLeft: "5px",
+            fontSize: fontSize(1.2, size)
         }
     })
 
