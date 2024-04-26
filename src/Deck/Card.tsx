@@ -93,7 +93,7 @@ export default function Card(props:cardProps){
         <TouchableOpacity  style={styles.view} onPress={flip}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.type}>{type}</Text>
-            <Text style={styles.text}>{text.replace("\n", "\n\n")}</Text>
+            <Text style={styles.text}>{text.replace(/\n(?!\d)/g, "\n\n")}</Text>
             <Image style={styles.image} source={{uri:image_uri}} />
         </TouchableOpacity >
     )
