@@ -1,3 +1,7 @@
+/** /src/Planecahse
+ * 
+ * @author Alex Malotky
+ */
 import { useState } from "react";
 import {View} from "react-native";
 
@@ -10,7 +14,11 @@ interface PlanechaseProps {
 }
 
 export default function Planechase(props:PlanechaseProps) {
+    //Validate Props
     const {init = [], size} = props;
+    if(typeof size !== "number")
+        throw new TypeError("Size must be a number!");
+
     const [list, setList] = useState<Array<CardBase>>([]);
 
     /** Shuffle Cards
