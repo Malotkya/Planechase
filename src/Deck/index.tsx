@@ -8,8 +8,19 @@ import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 import { BUTTON_WIDTH, BUTTON_DEFAULT } from '../Constants';
 import Card from "./Card";
 
-export default function Deck(props){
-    
+interface DeckProps {
+    list: Array<CardBase>,
+    size:number,
+    shuffle:Function
+}
+
+export default function Deck(props:DeckProps){
+    const {list = [], size, shuffle} = props;
+    if(typeof size !== "number")
+        throw new TypeError("Size must be a number!");
+    if(typeof shuffle !== "function")
+        throw new TypeError("Update must be a function!");
+
     const [index, setIndex] = useState(0);
 
     const styles = StyleSheet.create({
@@ -36,7 +47,7 @@ export default function Deck(props){
      */
     const nextCard = () => {
         let i = index+1;
-        if(i>=props.list.length)
+        if(i>=list.length)
             i=0;
         setIndex(i);
     }
@@ -47,7 +58,7 @@ export default function Deck(props){
     const prevCard = () => {
         let i = index-1;
         if(i<0)
-            i=props.list.length-1;
+            i=list.length-1;
         setIndex(i);
     }
 
@@ -55,12 +66,12 @@ export default function Deck(props){
      * 
      */
     useEffect(()=>{
-        const next= props.list[index+1];
+        const next= list[index+1];
         if(next) {
             Image.prefetch(next.image_uri);
         }
 
-        const prev = props.list[index-1];
+        const prev = list[index-1];
         if(prev){
             Image.prefetch(prev.image_uri);
         }
@@ -70,12 +81,12 @@ export default function Deck(props){
      * 
      */
     useEffect(()=>{
-        if(props.list.length > 1){
-            Image.prefetch(props.list[1].image_uri);
-            Image.prefetch(props.list[props.list.length-1].image_uri);
+        if(list.length > 1){
+            Image.prefetch(list[1].image_uri);
+            Image.prefetch(list[list.length-1].image_uri);
         }
 
-    }, [props.list])
+    }, [list])
 
     
 
@@ -88,12 +99,12 @@ export default function Deck(props){
                 <TouchableOpacity onPress={prevCard}>
                     <Text style={styles.button}>Previous</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.shuffle} onPress={props.shuffle}>
+                <TouchableOpacity style={styles.shuffle} onPress={()=>shuffle()}>
                     <Text style={styles.button}>Shuffle</Text>
                 </TouchableOpacity>
             </View>
             <View>
-                <Card card={props.list[index]} size={props.size-BUTTON_WIDTH}/>
+                <Card card={list[index]} size={size-BUTTON_WIDTH}/>
             </View>
         </View>
     );

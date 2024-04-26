@@ -5,9 +5,21 @@
 import {useState, useEffect} from "react";
 import {TouchableOpacity, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
+import { BUTTON_HEIGHT } from "../Constants";
 
-export default function Card(props){
-    const [state, setState] = useState(props.value.use);
+interface CardProps {
+    value:CardBase
+    onValueChange: (value:boolean)=>void
+}
+
+export default function ListItem(props:CardProps){
+    const {value = {}, onValueChange} = props;
+    if(typeof onValueChange !== "function")
+        throw new TypeError("onValueChange must be a function!");
+    
+    const {name = "undefined", use = false} = value as CardBase;
+    const [state, setState] = useState(use);
+    
 
     const styles = StyleSheet.create({
         touch: {
@@ -23,17 +35,17 @@ export default function Card(props){
 
     const update = () => {
         setState(!state);
-        props.onValueChange(!state);
+        onValueChange(!state);
     }
 
     useEffect(()=>{
-        setState(props.value.use);
-    }, [props.value.use])
+        setState(use);
+    }, [use])
 
     return (
         <TouchableOpacity style={styles.touch} onPress={update}>
             <Checkbox value={state} />
-            <Text style={styles.text}>{props.value.name}</Text>
+            <Text style={styles.text}>{name}</Text>
         </TouchableOpacity>
     )
 }
