@@ -5,13 +5,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
 import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as Device from 'expo-device'
 
 import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
+import Planechase from './src/Planechase';
+import Bounty from './src/Bounty';
 
 import allCards from "./cards.json";
-import Planechase from './src/Planechase';
+
 
 if(Platform.OS === "web")
     document.body.style.backgroundColor = "black";
@@ -46,10 +49,25 @@ function forceLandscape() {
 }
 
 export default function App() {
-
-    
+    const [current, setCurrent] = useState(0);
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
+
+    const PLANECHASE = <Planechase size={size} init={allCards.Planechase} />
+    const BOUNTY = <Bounty size={size} init={allCards.Bounty} />
+    //const UNKNOWN = <Unknown size={size} init={allCards.Unknown} />
+
+    const getCurrent = ():React.JSX.Element => {
+        switch (current) {
+            case 0:
+                return PLANECHASE;
+
+            case 1:
+                return BOUNTY;
+        }
+
+        return <Text>Error</Text> //UNKNOWN;
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -57,6 +75,11 @@ export default function App() {
             backgroundColor: 'black',
             alignItems: 'center',
             justifyContent: 'center'
+        },
+        header: {
+            display: "flex",
+            alignContent: "center",
+            flexDirection: "row"
         },
         footer: {
           paddingLeft: BUTTON_WIDTH,
@@ -67,8 +90,6 @@ export default function App() {
           justifyContent: "space-around",
         }
     });
-
-    
 
     /** Resize Effect
      * 
@@ -90,13 +111,20 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Planechase size={size} init={allCards.Planechase} />
-            <View style={styles.footer}>
-              <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
-              <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
-              <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
+            <View style={styles.header}>
+                <Text style={{color:"white"}}>MTG Companion App</Text>
+                <Picker selectedValue={current} onValueChange={(itemValue, itemIndex)=>setCurrent(itemIndex)}>
+                    <Picker.Item label="Planechase" value="0"/>
+                    <Picker.Item label="Bounty" value="1" />
+                </Picker>
             </View>
+            {getCurrent()}
             <StatusBar style="dark"/>
+            <View style={styles.footer}>
+                <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
+                <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
+                <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
+            </View>
         </View>
         
     )
