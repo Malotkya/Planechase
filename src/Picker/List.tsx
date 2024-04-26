@@ -6,7 +6,7 @@ import {useState, useEffect} from "react"
 import {View, Text, FlatList, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
-import {BUTTON_HEIGHT} from "../Constants"
+import {BUTTON_HEIGHT, MAX_SIZE} from "../Constants"
 import ListItem from "./ListItem";
 import { fontSize } from "../Util";
 
@@ -31,7 +31,7 @@ export default function List(props:ListProps){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
-    const HEIGHT = (list.length * fontSize(2.2, size)) + BUTTON_HEIGHT;
+    const HEIGHT = (list.length * fontSize(2.2, MAX_SIZE)) + BUTTON_HEIGHT;
 
     /** Picker Sub List Styling
      * 
@@ -132,7 +132,7 @@ export default function List(props:ListProps){
             <FlatList data={list} style={{overflow:"visible"}}
                     renderItem={
                         (it)=>{
-                            return (<ListItem value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} />)
+                            return (<ListItem value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} size={size}/>)
                         }
                     }
                 />
