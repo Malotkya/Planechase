@@ -76,19 +76,33 @@ function getDatabaseMetadata(filename){
 /** Download Update
  * 
  * @param {string} uri 
+ * @param {number} size
  * @returns {Promise<string>} - temp filename
  */
-function download(uri){
+function download(uri, size){
     return new Promise((resolve, reject)=>{
         const fileName = "download.json";
         const fileStream = fs.createWriteStream(fileName);
 
+        /** Update
+         * 
+         * @param {number} value
+         * @param {boolean} refresh
+         */
+        const update = (value, refresh=true) => {
+            const percent = Math.round((value / size) * 1000) / 10;
+            process.stdout.write(`Progress: ${percent}%\n`);
+
+            if(refresh)
+                process.stdout.write('\u001b[1A');
+        }
+
         https.get(uri, response=>{
             response.pipe(new ImportStream())
-                .on("log", console.log)
+                .on("log", update)
                 .on("error", reject)
             .pipe( new OptimizeStream())
-                .on("log", console.log)
+                .on("log", ()=>update(size, false))
                 .on("error", reject)
             .pipe(fileStream)
                 .on("error", reject)
@@ -111,9 +125,7 @@ function update(filename){
         checkForUpdate(date).then(update=>{
 
             if(update){
-                console.log(update.size);
-                
-                download(update.download_uri).then(newFileName=>{
+                download(update.download_uri, update.size).then(newFileName=>{
                     try {
                         fs.unlinkSync(filename);
                     } catch(e){

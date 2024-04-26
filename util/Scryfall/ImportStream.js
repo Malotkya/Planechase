@@ -29,7 +29,7 @@ class ImportStream extends Transform {
             index = this.buffer.indexOf('\n');
         }
 
-        console.log(this.count);
+        this.emit("log", this.count);
         callback();
     }
 
