@@ -27,15 +27,20 @@ function push(object, name, value){
  * @returns {Object}
  */
 function clean(object){
+    const output = {};
+
     for(let name in object){
-        if(!Array.isArray(object[name]) || object[name].length === 0) {
-            delete object[name];
-        } else {
-            object[name].sort((a,b)=>a.name.localeCompare(b.name));
+        //Only get lists that contain cards.
+        if(Array.isArray(object[name]) && object[name].length !== 0) {
+            //Remove unnesisary words from name.
+            const newName = name.replace(/(commander)|(tokens)|(planes?)(?=$)/gi, "").trim();
+
+            //Sort Cards by nanme
+            output[newName] = object[name].sort((a,b)=>a.name.localeCompare(b.name));
         }
     }
 
-    return object;
+    return Object.fromEntries(Object.entries(output).sort(([lhs], [rhs])=>lhs.localeCompare(rhs)));
 }
 
 class OptimizeStream extends Transform {
