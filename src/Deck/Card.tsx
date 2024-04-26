@@ -6,6 +6,7 @@ import {useState, useEffect} from 'react';
 import {StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 
 import { INVERTSE_RATIO, RATIO } from '../Constants';
+import { fontSize } from '../Util';
 const OFFSET = -2;
 
 interface cardProps {
@@ -59,7 +60,8 @@ export default function Card(props:cardProps){
             borderBottomWidth: 1
         },
         text: {
-            padding: 5
+            padding: 5,
+            fontSize: horizontal? 14: fontSize(1.2, size)
         },
         image: {
             position: 'absolute',
