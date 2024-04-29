@@ -46,7 +46,7 @@ export default function Card(props:cardProps){
             height: height,
             borderStyle: "solid",
             borderWidth: 2,
-            borderRadius: 15,
+            borderRadius: horizontal? 15: 8,
             borderColor: "black",
             overflow: "hidden",
             backgroundColor: "white"
