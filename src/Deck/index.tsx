@@ -84,21 +84,6 @@ export default function Deck(props:DeckProps){
         }
     }, [index]);
 
-    /** Display Cards
-     * 
-     * Used to easily display card(s) depending on if there is an addional card or not.
-     * 
-     * @returns {Array<React.JSX.Element>}
-     */
-    const displayCards = ():Array<React.JSX.Element> =>{
-        const output = [<Card card={list[index]} size={size-BUTTON_WIDTH} horizontal={horizontal}/>];
-
-        if(additonal)
-            output.push(<Card card={additonal} size={size-BUTTON_WIDTH} horizontal={horizontal} />);
-
-        return output;
-    }
-
     /** Pre-load the next images on list change.
      * 
      */
@@ -124,7 +109,8 @@ export default function Deck(props:DeckProps){
                 </TouchableOpacity>
             </View>
             <View style={{flexDirection: "row"}}>
-                {displayCards()}
+                <Card card={list[index]} size={size-BUTTON_WIDTH} horizontal={horizontal}/>
+                {additonal? <Card card={additonal} size={size-BUTTON_WIDTH} horizontal={horizontal} />: undefined}
             </View>
         </View>
     );
