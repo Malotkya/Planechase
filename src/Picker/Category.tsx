@@ -38,7 +38,7 @@ export default function Category(props:CategoryProps){
      */
     const styles = StyleSheet.create({
         wrapper: {
-            width: "50%"
+            width: (size - BUTTON_WIDTH) / 2
         },
         scrollOuter: {
             height: HEIGHT,

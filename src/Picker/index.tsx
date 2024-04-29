@@ -53,7 +53,6 @@ export default function CardPicker(props:PickerProps){
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
-            width: WIDTH,
             overflow: "hidden"
         }
     });
