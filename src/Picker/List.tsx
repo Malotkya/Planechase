@@ -3,10 +3,10 @@
  * @author Alex Malotky
  */
 import {useState, useEffect} from "react"
-import {View, Text, FlatList, StyleSheet} from "react-native";
+import {View, Text, StyleSheet} from "react-native";
 import Checkbox from 'expo-checkbox';
 
-import {BUTTON_HEIGHT, MAX_SIZE} from "../Constants"
+import {BUTTON_HEIGHT} from "../Constants"
 import ListItem from "./ListItem";
 import { fontSize } from "../Util";
 
@@ -31,18 +31,15 @@ export default function List(props:ListProps){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
-    const HEIGHT = (list.length * fontSize(2.2, MAX_SIZE)) + BUTTON_HEIGHT;
 
     /** Picker Sub List Styling
      * 
      */
     const styles = StyleSheet.create({
         wrapper: {
-            flex: 1,
             display: "flex",
             flexGrow: 1,
-            minHeight: HEIGHT,
-            maxHeight: HEIGHT
+            flexShrink: 1
         },
         column: {
             position: 'absolute',
@@ -129,13 +126,12 @@ export default function List(props:ListProps){
                 </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
-            <FlatList data={list} style={{overflow:"visible"}}
-                    renderItem={
-                        (it)=>{
-                            return (<ListItem value={it.item} onValueChange={(value:boolean)=>updateCard(it.index, value)} key={it.index} size={size}/>)
-                        }
-                    }
-                />
+            <View>
+                {list.map((item, index)=>{
+                    return (<ListItem value={item} onValueChange={(value:boolean)=>updateCard(index, value)} key={index} size={size}/>)
+                })}
+            </View>
+            
         </View>
     )
 }

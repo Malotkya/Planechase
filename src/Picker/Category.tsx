@@ -38,8 +38,7 @@ export default function Category(props:CategoryProps){
      */
     const styles = StyleSheet.create({
         wrapper: {
-            width: "50%",
-            display: "block" //TODO: Find way to not break display without this!
+            width: "50%"
         },
         scrollOuter: {
             height: HEIGHT,
@@ -104,7 +103,7 @@ export default function Category(props:CategoryProps){
      * 
      * @returns {Array<React.JSX.Element>}
      */
-    const iterate = () => {
+    const iterate = ():Array<React.JSX.Element> => {
         const output:Array<React.JSX.Element> = [];
 
         for(let name in list){
