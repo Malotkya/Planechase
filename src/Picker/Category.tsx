@@ -44,13 +44,8 @@ export default function Category(props:CategoryProps){
             height: HEIGHT,
             width: "100%",
             backgroundColor: "white",
-            borderColor: "black",
+            borderColor: "black", 
             borderWidth: 1
-        },
-        scrollInner: {
-            flexGrow: 1,
-            display: "flex",
-            minHeight: "min-content",
         },
         title: {
             flexDirection: "row",
@@ -167,7 +162,7 @@ export default function Category(props:CategoryProps){
                 </View>
                 <Text style={styles.titleText}>{name}</Text>
             </View>
-            <ScrollView style={styles.scrollOuter} contentContainerStyle={styles.scrollInner}> 
+            <ScrollView style={styles.scrollOuter}> 
                 {iterate()}
             </ScrollView>
         </View>
