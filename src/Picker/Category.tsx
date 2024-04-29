@@ -53,7 +53,6 @@ export default function Category(props:CategoryProps){
             height: BUTTON_HEIGHT,
             borderColor: "black",
             borderWidth: 1,
-            borderBottomWidth: 0
         },
         titleText: {
             fontSize: fontSize(1.5, size),

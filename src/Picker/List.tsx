@@ -53,9 +53,6 @@ export default function List(props:ListProps){
             flexDirection: "row",
             backgroundColor: "lightgray",
             height: BUTTON_HEIGHT,
-            borderColor: "black",
-            borderWidth: 1,
-            borderBottomWidth: 0
         },
         titleText: {
             fontSize: fontSize(1.3, size),

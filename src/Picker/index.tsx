@@ -49,7 +49,7 @@ export default function CardPicker(props:PickerProps){
         view: {
             display: visible? "flex": "none",
             position: "absolute",
-            left: BUTTON_WIDTH,
+            left: BUTTON_WIDTH + 1,
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
