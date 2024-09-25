@@ -31,7 +31,7 @@ export default function Category(props:CategoryProps){
      *  1: All cards are true
      */
     const [state, setState] = useState(-1);
-    const HEIGHT = Math.floor((size - BUTTON_WIDTH) * RATIO) - BUTTON_HEIGHT;
+    const HEIGHT = Math.floor(size * RATIO) - BUTTON_HEIGHT;
 
     /** Category Styling
      * 
