@@ -2,10 +2,10 @@ const pwaAssetGenerator = require("pwa-asset-generator");
 const fs = require("fs");
 const path = require("path");
 
-const {expo} = require("./app.json");
+const {expo} = require("../app.json");
 
 //Global Variables
-const PUBLIC_DIRECTORY = path.join(__dirname, "public");
+const PUBLIC_DIRECTORY = path.join(process.cwd(), "public");
 const MANIFEST_FILE = path.join(PUBLIC_DIRECTORY, "manifest.json");
 const INDEX_FILE = path.join(PUBLIC_DIRECTORY, "index.html");
 
@@ -34,12 +34,12 @@ related_applications": [
 
     //Generate Starting Files
     fs.writeFileSync(MANIFEST_FILE, JSON.stringify({background_color,  categories, description, display, lang, name, slug, start_url, short_name}));
-    fs.copyFileSync(path.join(__dirname, "assets", "index.html"), INDEX_FILE);
+    fs.copyFileSync(path.join(process.cwd(), "assets", "index.html"), INDEX_FILE);
 
     //Generate Splash Screen
     if(expo.splash){
         await pwaAssetGenerator.generateImages(
-            path.resolve(__dirname, expo.splash.image),
+            path.resolve(process.cwd(), expo.splash.image),
             path.join(PUBLIC_DIRECTORY, "splash"), 
             {
                 scrape: false,
@@ -54,7 +54,7 @@ related_applications": [
     //Generate Icons
     if(expo.web.favicon){
         await pwaAssetGenerator.generateImages(
-            path.resolve(__dirname, expo.web.favicon),
+            path.resolve(process.cwd(), expo.web.favicon),
             PUBLIC_DIRECTORY,
             {
                 scrape: false,
