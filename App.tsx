@@ -142,7 +142,7 @@ export default function App() {
             {getCurrent()}
             <StatusBar style="dark"/>
             <View style={styles.footer}>
-                <Text style={{width: "100%", color: "white"}}>Created by: Alex Malotky</Text>
+                <Text style={{width: "100%", color: "white", textAlign: "center"}}>Created by: Alex Malotky</Text>
                 <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
                 <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
             </View>
