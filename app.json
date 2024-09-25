@@ -4,12 +4,13 @@
         "slug": "Planechase",
         "version": "1.0.0",
         "orientation": "landscape",
+        "display": "standalone",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "dark",
         "splash": {
             "image": "./assets/splash.png",
             "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
+            "background_color": "#ffffff"
         },
         "assetBundlePatterns": [
             "**/*"
@@ -33,6 +34,7 @@
         },
         "web": {
             "favicon": "./assets/favicon.png",
+            "start_url": "/?utm_source=web_app_manifest",
             "bundler": "metro"
         },
         "extra": {
