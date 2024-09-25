@@ -14,23 +14,23 @@ interface PickerProps {
     size:number
     callback:Function,
     init: Array<GameVersion>
-    storageKey?:string
+    storageKey:string
 }
 
 export default function CardPicker(props:PickerProps){
     //Check Props
-    const {size, callback, init, storageKey = String(Math.random())} = props;
+    const {size, callback, init, storageKey} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof callback !== "function")
         throw new TypeError("Callback must be a function!");
     if(typeof init !== "object")
         throw new TypeError("Init Data must be an object!");
+    if(typeof storageKey !== "string")
+        throw new TypeError("Storage Key must be a string!");
 
     const [cards, setCards] = useState<Array<GameVersion>>([]);
     const [visible, setVisible] = useState(false);
-
-    const WIDTH = size - BUTTON_WIDTH;
 
     /** Card Picker Styling
      * 
@@ -64,16 +64,15 @@ export default function CardPicker(props:PickerProps){
      * @param {Array<GameVersion>} state 
      * @returns {Array<CardBase>}
      */
-    const getList = (state?:Array<GameVersion>):Array<CardBase> =>{
+    const getList = (state:Array<GameVersion> = cards):Array<CardBase> =>{
         const output:Array<CardBase> = [];
-        state = state || cards;
 
-        for(let list of state!){
+        for(let list of state){
             for(let index in list.value){
 
                 for(let card of list.value[index]) {
                     if(card.use)
-                                output.push(card);
+                        output.push(card);
                 }
             }
         }
