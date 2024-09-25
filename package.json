@@ -7,7 +7,7 @@
     "dev:android": "expo start --android",
     "dev:ios": "expo start --ios",
     "dev:web": "expo start --web",
-    "build": "node ./pwa-asset-gen.js && expo export -p web",
+    "build": "node ./util/pwa-asset-gen.js && expo export -p web && node ./util/minify.js",
     "preview": "npm run build && wrangler pages dev",
     "deploy": "npm run build && wrangler pages deploy",
     "scryfall": "node ./util/update.js"
