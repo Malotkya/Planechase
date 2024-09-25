@@ -10,16 +10,18 @@ import Deck from "./Deck";
 
 interface PlanechaseProps {
     init: Array<GameVersion>,
-    size:number
+    size:number,
+    horizontal:boolean
 }
 
 export default function Planechase(props:PlanechaseProps) {
     //Validate Props
-    const {init = [], size} = props;
+    const {init = [], size, horizontal} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
 
     const [list, setList] = useState<Array<CardBase>>([]);
+    const [visible, setVisible] = useState(false);
 
     /** Shuffle Cards
      * 
@@ -37,11 +39,18 @@ export default function Planechase(props:PlanechaseProps) {
 
         setList(newList);
     }
+
+    /** Flip Visbility
+     * 
+     */
+    const flip = () =>{
+        setVisible(!visible);
+    }
     
     return (
         <View>
-            <CardPicker callback={shuffleCards} size={size} init={init} storageKey="planechase"/>
-            <Deck list={list} size={size} shuffle={()=>shuffleCards(list)}/>
+            <CardPicker callback={shuffleCards} size={size} init={init} visible={visible} storageKey="planechase"/>
+            <Deck list={list} size={size} shuffle={()=>shuffleCards(list)} flipView={flip} horizontal={horizontal}/>
         </View> 
     );
 }

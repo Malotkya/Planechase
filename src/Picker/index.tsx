@@ -15,11 +15,12 @@ interface PickerProps {
     callback:Function,
     init: Array<GameVersion>
     storageKey:string
+    visible:boolean
 }
 
 export default function CardPicker(props:PickerProps){
     //Check Props
-    const {size, callback, init, storageKey} = props;
+    const {size, callback, init, storageKey, visible} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof callback !== "function")
@@ -30,7 +31,6 @@ export default function CardPicker(props:PickerProps){
         throw new TypeError("Storage Key must be a string!");
 
     const [cards, setCards] = useState<Array<GameVersion>>([]);
-    const [visible, setVisible] = useState(false);
 
     /** Card Picker Styling
      * 
@@ -124,18 +124,9 @@ export default function CardPicker(props:PickerProps){
         }
     }, [cards]);
 
-    /** Flip Visbility
-     * 
-     */
-    const flip = () =>{
-        setVisible(!visible);
-    }
-
     return (
         <View style={styles.wrapper}>
-            <TouchableOpacity onPress={flip}>
-                <Text style={styles.button}>Card List</Text>
-            </TouchableOpacity>
+            
             <View style={styles.view}>
                 {cards.map((value, index)=>{
                     return <Category name={value.name}

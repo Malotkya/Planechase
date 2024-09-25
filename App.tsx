@@ -4,13 +4,13 @@
  */
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
-import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform, Alert } from 'react-native';
+import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as Device from 'expo-device'
 
-import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT } from './src/Constants';
+import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT, RATIO, BUTTON_DEFAULT } from './src/Constants';
 import { fontSize } from './src/Util';
 import Planechase from './src/Planechase';
 import Bounty from './src/Bounty';
@@ -36,15 +36,14 @@ async function forceLandscape() {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
-
-
 export default function App() {
     const [current, setCurrent] = useState("0");
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
+    const [horizontal, setHorizontal] = useState(false); //true = horizontal
 
-    const PLANECHASE = <Planechase size={size} init={allCards.Planechase} />
-    const BOUNTY = <Bounty size={size} init={allCards.Bounty} />
+    const PLANECHASE = <Planechase size={size} init={allCards.Planechase} horizontal={horizontal}/>
+    const BOUNTY = <Bounty size={size} init={allCards.Bounty} horizontal={horizontal}/>
 
     const getCurrent = ():React.JSX.Element => {
         switch (current) {
@@ -76,14 +75,6 @@ export default function App() {
         title: {
             fontSize: fontSize(2, size),
             color: "white"
-        },
-        footer: {
-          paddingLeft: BUTTON_WIDTH,
-          width: size,
-          textAlign: "center",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "space-around",
         }
     });
 
@@ -114,13 +105,15 @@ export default function App() {
      * 
      */
     useEffect(()=>{
-        const test = Math.ceil((height - (BUTTON_HEIGHT*1.5)) * INVERTSE_RATIO);
+        const test = Math.ceil((height - BUTTON_HEIGHT) * INVERTSE_RATIO);
         if( test > (width-BUTTON_WIDTH)){
+            setHorizontal(false)
             if(width < MAX_SIZE)
                 setSize(width);
             else
                 setSize(MAX_SIZE)
         } else {
+            setHorizontal(true);
             if(test < MAX_SIZE)
                 setSize(test);
             else
@@ -141,11 +134,6 @@ export default function App() {
             </View>
             {getCurrent()}
             <StatusBar style="dark"/>
-            <View style={styles.footer}>
-                <Text style={{width: "100%", color: "white", textAlign: "center"}}>Created by: Alex Malotky</Text>
-                <Button title="Github Repo" onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")} />
-                <Button title="My Other Work" onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")} />
-            </View>
         </View>
         
     )

@@ -3,28 +3,32 @@
  * @author Alex Malotky
  */
 import {useState, useEffect} from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
-
-import { BUTTON_WIDTH, BUTTON_DEFAULT } from '../Constants';
+import { StyleSheet, View, Image, GestureResponderEvent } from 'react-native';
+import { BUTTON_WIDTH } from '../Constants';
 import Card from "./Card";
+import Aside from './Aside';
 
 interface DeckProps {
     list: Array<CardBase>,
     size:number,
-    shuffle:Function
-    additonal?:CardBase
+    shuffle: (e:GestureResponderEvent)=>void,
+    flipView: (e:GestureResponderEvent)=>void,
+    additonal?:CardBase,
+    horizontal: boolean
 }
 
 export default function Deck(props:DeckProps){
     //Validate Props
-    const {list = [], size, shuffle, additonal} = props;
+    const {list = [], size, shuffle, flipView, additonal, horizontal} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof shuffle !== "function")
         throw new TypeError("Update must be a function!");
+    if(typeof shuffle !== "function")
+        throw new TypeError("Flip View must be a function!");
 
     const [index, setIndex] = useState(0);
-    const horizontal = additonal === undefined
+    const double = additonal === undefined
 
 
     /** Deck Styling
@@ -33,19 +37,8 @@ export default function Deck(props:DeckProps){
     const styles = StyleSheet.create({
         container: {
             display: "flex",
-            flexDirection: "row",
+            flexDirection: horizontal? "row": "column-reverse",
             flexWrap: "nowrap"
-        },
-        buttonGroup: {
-          width: BUTTON_WIDTH,
-          justifyContent: "center"
-        },
-        button: {
-            ...BUTTON_DEFAULT,
-            margin: 3
-        },
-        shuffle: {
-            marginTop: "5%"
         }
     });
     
@@ -97,20 +90,10 @@ export default function Deck(props:DeckProps){
 
     return (
         <View style={styles.container}>
-            <View style={styles.buttonGroup}>
-                <TouchableOpacity onPress={nextCard}>
-                    <Text style={styles.button}>Next</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={prevCard}>
-                    <Text style={styles.button}>Previous</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.shuffle} onPress={()=>shuffle()}>
-                    <Text style={styles.button}>Shuffle</Text>
-                </TouchableOpacity>
-            </View>
+            <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} onShow={flipView} horizontal={horizontal}/>
             <View style={{flexDirection: "row"}}>
-                <Card card={list[index]} size={size-BUTTON_WIDTH} horizontal={horizontal}/>
-                {additonal? <Card card={additonal} size={size-BUTTON_WIDTH} horizontal={horizontal} />: undefined}
+                <Card card={list[index]} size={size-BUTTON_WIDTH} horizontal={double}/>
+                {additonal? <Card card={additonal} size={size-BUTTON_WIDTH} horizontal={double} />: undefined}
             </View>
         </View>
     );
