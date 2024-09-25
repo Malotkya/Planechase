@@ -12,6 +12,7 @@ const INDEX_FILE = path.join(PUBLIC_DIRECTORY, "index.html");
 //Manifest Variables
 const {categories, description, display, name, slug, lang = "en"} = expo;
 const  background_color = expo.web.background_color || expo.background_color || expo.splash.background_color;
+const orientation = expo.web.orientation || expo.orientation;
 const start_url = expo.web.start_url || expo.start_url
 const short_name = expo.short_name || name;
 
@@ -33,7 +34,7 @@ related_applications": [
     fs.mkdirSync(PUBLIC_DIRECTORY, {recursive: true});
 
     //Generate Starting Files
-    fs.writeFileSync(MANIFEST_FILE, JSON.stringify({background_color,  categories, description, display, lang, name, slug, start_url, short_name}));
+    fs.writeFileSync(MANIFEST_FILE, JSON.stringify({background_color,  categories, description, display, lang, name, slug, start_url, short_name, orientation}));
     fs.copyFileSync(path.join(process.cwd(), "assets", "index.html"), INDEX_FILE);
 
     //Generate Splash Screen
