@@ -21,7 +21,6 @@ import allCards from "./cards.json";
 //Platform Specific Settings
 if(Platform.OS === "web") {
     document.body.style.backgroundColor = "black";
-    orientationAlert();
 } else if (Device.osName === "iOS" || Device.osName === "iPadOS") {
     ScreenOrientation.unlockAsync()
             .then(forceLandscape)
@@ -34,19 +33,10 @@ if(Platform.OS === "web") {
  * 
  */
 async function forceLandscape() {
-    try {
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
-    } catch (e){
-        await orientationAlert();
-    }
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
-async function orientationAlert() {
-    const orientation = await ScreenOrientation.getOrientationAsync();
-    if(orientation === ScreenOrientation.Orientation.PORTRAIT_DOWN || orientation === ScreenOrientation.Orientation.PORTRAIT_UP) {
-        Alert.alert("Try rotating the screen for a better experience!");
-    }
-}
+
 
 export default function App() {
     const [current, setCurrent] = useState("0");
@@ -55,7 +45,6 @@ export default function App() {
 
     const PLANECHASE = <Planechase size={size} init={allCards.Planechase} />
     const BOUNTY = <Bounty size={size} init={allCards.Bounty} />
-    //const UNKNOWN = <Unknown size={size} init={allCards.Unknown} />
 
     const getCurrent = ():React.JSX.Element => {
         switch (current) {
@@ -66,7 +55,7 @@ export default function App() {
                 return BOUNTY;
         }
 
-        return <Text>Error</Text> //UNKNOWN;
+        return <Text>Error: Invalid Current Selection</Text>;
     }
 
     const styles = StyleSheet.create({
