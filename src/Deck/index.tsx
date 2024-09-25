@@ -92,8 +92,8 @@ export default function Deck(props:DeckProps){
         <View style={styles.container}>
             <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} onShow={flipView} horizontal={horizontal}/>
             <View style={{flexDirection: "row"}}>
-                <Card card={list[index]} size={size-BUTTON_WIDTH} horizontal={double}/>
-                {additonal? <Card card={additonal} size={size-BUTTON_WIDTH} horizontal={double} />: undefined}
+                <Card card={list[index]} size={size} horizontal={double}/>
+                {additonal? <Card card={additonal} size={size} horizontal={double} />: undefined}
             </View>
         </View>
     );

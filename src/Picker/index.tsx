@@ -3,7 +3,7 @@
  * @author Alex Malotky
  */
 import {useState, useEffect} from "react";
-import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
+import {StyleSheet, View, TouchableOpacity, GestureResponderEvent} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Category from "./Category";
@@ -16,11 +16,12 @@ interface PickerProps {
     init: Array<GameVersion>
     storageKey:string
     visible:boolean
+    horizontal:boolean
 }
 
 export default function CardPicker(props:PickerProps){
     //Check Props
-    const {size, callback, init, storageKey, visible} = props;
+    const {size, callback, init, storageKey, visible, horizontal} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof callback !== "function")
@@ -46,10 +47,10 @@ export default function CardPicker(props:PickerProps){
             height: 0
         },
         button: BUTTON_DEFAULT,
-        view: {
+        modal: {
             display: visible? "flex": "none",
             position: "absolute",
-            left: BUTTON_WIDTH + 1,
+            left: horizontal? BUTTON_WIDTH + 1: undefined,
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
@@ -98,6 +99,7 @@ export default function CardPicker(props:PickerProps){
             return c;
         });
     }
+
     
     /** Cards List State Change Effect
      * 
@@ -124,16 +126,18 @@ export default function CardPicker(props:PickerProps){
         }
     }, [cards]);
 
+    const stopPropagation = (e:GestureResponderEvent) => e.stopPropagation()
+
     return (
         <View style={styles.wrapper}>
             
-            <View style={styles.view}>
+            <TouchableOpacity style={styles.modal} onPress={stopPropagation}>
                 {cards.map((value, index)=>{
                     return <Category name={value.name}
                         list={value.value} key={index} size={size}
                         onUpdate={(update:CardList)=>updateState(value.name, update)} />
                 })}
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }

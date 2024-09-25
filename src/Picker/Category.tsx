@@ -38,7 +38,7 @@ export default function Category(props:CategoryProps){
      */
     const styles = StyleSheet.create({
         wrapper: {
-            width: (size - BUTTON_WIDTH) / 2
+            width: size / 2
         },
         scrollOuter: {
             height: HEIGHT,
@@ -63,7 +63,7 @@ export default function Category(props:CategoryProps){
         },
         checkbox: {
             justifyContent: "center",
-            padding: "3px"
+            padding: 3
         }
     });
 

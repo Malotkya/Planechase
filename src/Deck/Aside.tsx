@@ -49,9 +49,10 @@ export default function Aside(props:AsideProps){
             margin: 3
         },
         buttonWrapper: {
-            width: horizontal? BUTTON_WIDTH: "100%",
-            height: horizontal? "100%":  BUTTON_HEIGHT,
+            width: horizontal? BUTTON_WIDTH: undefined,
+            height: horizontal? undefined:  BUTTON_HEIGHT,
             flexDirection: horizontal? "column": "row",
+            gap: 5,
             justifyContent: "center"
         },
         flowWrapper: {
@@ -61,7 +62,7 @@ export default function Aside(props:AsideProps){
             justifyContent: "center"
         },
         footerText: {
-            flexGrow: 1,
+            flexGrow: horizontal? undefined: 1,
             width: "100%",
             color: "white",
             textAlign: "center"
@@ -74,11 +75,16 @@ export default function Aside(props:AsideProps){
         }
     });
 
+    const showModalEvent = (e:GestureResponderEvent) => {
+        e.stopPropagation();
+        onShow(e);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.buttonWrapper} >
-                    <TouchableOpacity onPress={onShow}>
+                    <TouchableOpacity onPress={showModalEvent}>
                         <Text style={styles.button}>Card List</Text>
                     </TouchableOpacity>
                 </View>
@@ -99,17 +105,17 @@ export default function Aside(props:AsideProps){
                 </View>
             </View>
             <View style={styles.footer}>
-                    <Text style={styles.footerText}>
-                        Created by: {horizontal? "\n": ""} Alex Malotky
-                    </Text>
-                    <View style={styles.buttonWrapper} >
-                        <TouchableOpacity onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")}>
-                            <Text style={styles.footerButton}>Github Repo</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")}>
-                            <Text style={styles.footerButton}>My Other Work</Text>
-                        </TouchableOpacity>
-                    </View>
+                <Text style={styles.footerText}>
+                    Created by: {horizontal? "\n": ""} Alex Malotky
+                </Text>
+                <View style={styles.buttonWrapper} >
+                    <TouchableOpacity onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")}>
+                        <Text style={styles.footerButton}>Github Repo</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")}>
+                        <Text style={styles.footerButton}>My Other Work</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     )

@@ -21,19 +21,20 @@ const WANTED:CardBase = {
 interface BountyProps {
     init: GameVersion,
     size:number,
-    horizontal:boolean
+    horizontal:boolean,
+    visible: boolean
+    flip: ()=>void
 }
 
 export default function Bounty(props:BountyProps) {
     //Validate Props
-    const {init, size, horizontal} = props;
+    const {init, size, horizontal, flip, visible} = props;
     if(typeof size !== "number")
         throw new TypeError("Size must be a number!");
     if(typeof init !== "object")
         throw new TypeError("Init must be an object!");
 
     const [list, setList] = useState<Array<CardBase>>([]);
-    const [visible, setVisible] = useState(false);
 
     /** Shuffle Cards
      * 
@@ -51,17 +52,10 @@ export default function Bounty(props:BountyProps) {
 
         setList(newList);
     }
-
-    /** Flip Visbility
-     * 
-     */
-    const flip = () =>{
-        setVisible(!visible);
-    }
     
     return (
         <View>
-            <CardPicker callback={shuffleCards} size={size} init={[init]} visible={visible} storageKey="bounty"/>
+            <CardPicker callback={shuffleCards} size={size} init={[init]} visible={visible} storageKey="bounty" horizontal={horizontal}/>
             <Deck list={list} size={size} shuffle={()=>shuffleCards(list)} flipView={flip} additonal={WANTED} horizontal={horizontal}/>
         </View> 
     );

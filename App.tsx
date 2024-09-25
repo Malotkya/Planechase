@@ -40,10 +40,19 @@ export default function App() {
     const [current, setCurrent] = useState("0");
     const {height, width} = useWindowDimensions();
     const [size, setSize] = useState(width);
-    const [horizontal, setHorizontal] = useState(false); //true = horizontal
+    const [horizontal, setHorizontal] = useState(false);
+    const [modalVisable, setModalVisable] = useState(false);
 
-    const PLANECHASE = <Planechase size={size} init={allCards.Planechase} horizontal={horizontal}/>
-    const BOUNTY = <Bounty size={size} init={allCards.Bounty} horizontal={horizontal}/>
+    const closeModal = () => {
+        setModalVisable(false);
+    }
+
+    const flipModal = () => {
+        setModalVisable(!modalVisable);
+    }
+
+    const PLANECHASE = <Planechase size={size} init={allCards.Planechase} horizontal={horizontal} visible={modalVisable} flip={flipModal} />
+    const BOUNTY = <Bounty size={size} init={allCards.Bounty} horizontal={horizontal} visible={modalVisable} flip={flipModal}/>
 
     const getCurrent = ():React.JSX.Element => {
         switch (current) {
@@ -65,7 +74,7 @@ export default function App() {
             justifyContent: 'center'
         },
         header: {
-            paddingLeft: BUTTON_WIDTH,
+            paddingLeft: horizontal? BUTTON_WIDTH: 0,
             width: size,
             display: "flex",
             justifyContent: "space-around",
@@ -105,26 +114,26 @@ export default function App() {
      * 
      */
     useEffect(()=>{
-        const test = Math.ceil((height - BUTTON_HEIGHT) * INVERTSE_RATIO);
-        if( test > (width-BUTTON_WIDTH)){
+        const testHeight = Math.ceil((height - (2 *BUTTON_HEIGHT) - 14) * INVERTSE_RATIO);
+        const testWidth = width - BUTTON_WIDTH;
+
+        if( testHeight > testWidth){
             setHorizontal(false)
-            if(width < MAX_SIZE)
-                setSize(width);
+            if(testWidth < MAX_SIZE)
+                setSize(testWidth);
             else
                 setSize(MAX_SIZE)
         } else {
             setHorizontal(true);
-            if(test < MAX_SIZE)
-                setSize(test);
+            if(testHeight < MAX_SIZE)
+                setSize(testHeight);
             else
                 setSize(MAX_SIZE)
         }
     }, [height, width]);
 
-    
-
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={closeModal}>
             <View style={styles.header}>
                 <Text style={styles.title}>MTG Companion App</Text>
                 <Picker selectedValue={current} onValueChange={updateCurrent}>
@@ -134,7 +143,7 @@ export default function App() {
             </View>
             {getCurrent()}
             <StatusBar style="dark"/>
-        </View>
+        </TouchableOpacity>
         
     )
 }
