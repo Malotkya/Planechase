@@ -1,6 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "planechase"
-pages_build_output_dir = "./web-build"
+pages_build_output_dir = "./dist"
 compatibility_date = "2024-09-25"
 
 # Automatically place your workloads in an optimal location to minimize latency.
