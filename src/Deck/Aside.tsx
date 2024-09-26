@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import {StyleSheet, View, TouchableOpacity, Text, GestureResponderEvent, Linking} from "react-native";
+import {StyleSheet, View, TouchableOpacity, Text, GestureResponderEvent, useWindowDimensions, ViewStyle} from "react-native";
 import { BUTTON_WIDTH, BUTTON_DEFAULT, BUTTON_HEIGHT } from "../Constants";
 
 interface AsideProps {
@@ -11,6 +11,7 @@ interface AsideProps {
 }
 
 export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:AsideProps){
+    const {width} = useWindowDimensions();
 
     /** Aside Styling
      * 
@@ -47,14 +48,33 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
             flexDirection: state.direction? "column": "row",
             gap: 5,
             justifyContent: "center"
-        },
-        flowWrapper: {
-            width: state.direction? BUTTON_WIDTH: "100%",
-            height: state.direction? "100%":  BUTTON_HEIGHT,
-            flexDirection: state.direction? "column": "row-reverse",
-            justifyContent: "center"
         }
     });
+
+    const flowStyling = ():ViewStyle => {
+        if(state.direction){
+            return {
+                width: BUTTON_WIDTH,
+                height: "100%",
+                flexDirection: "column",
+                justifyContent: "center"
+            }
+        } else if(width > 520){
+            return {
+                width: "100%",
+                height:  BUTTON_HEIGHT,
+                flexDirection: "row-reverse",
+                justifyContent: "center"
+            }
+        } else {
+            return {
+                width: BUTTON_WIDTH,
+                height: "100%",
+                flexDirection: "column",
+                justifyContent: "flex-start"
+            }
+        }
+    }
 
     const showSelectModal = (e:GestureResponderEvent) => {
         e.stopPropagation();
@@ -76,7 +96,7 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
                 </View>
             </View>
             <View style={styles.main}>
-                <View style={styles.flowWrapper} >
+                <View style={flowStyling()} >
                     <TouchableOpacity onPress={onNext}>
                         <Text style={styles.button}>Next</Text>
                     </TouchableOpacity>
