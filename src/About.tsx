@@ -10,41 +10,58 @@ interface AboutProps {
 
 export default function About({dispatch, state}:AboutProps){
     const {height} = useWindowDimensions();
-    const SIZE = state.size * RATIO;
+    const INVERSE = state.size * RATIO;
 
     const styles = StyleSheet.create({
         wrapper: {
-            width: "80%",
-            height: SIZE,
+            width: state.size,
+            height: INVERSE,
             marginLeft: "auto",
             marginRight: "auto",
-            marginTop: Math.floor( (height - SIZE) / 2 ),
+            marginTop: Math.floor( (height - INVERSE) / 2 ),
             display: "flex",
             flexDirection: "column",
             backgroundColor: "black",
-            cursor: "auto"
+            cursor: "auto",
+            borderColor: "white",
+            borderStyle: "solid",
+            borderWidth: 3,
+            borderRadius: 10
         },
         header: {
             display: "flex",
             flexDirection: "row",
             marginBottom: 10,
+            borderBottomColor: "white",
+            borderBottomWidth: 3,
+            padding: 5
         },
         title: {
             flexGrow: 1,
             textAlign: "center",
             color: "white",
-            fontSize: fontSize(2, state.size)
+            fontSize: fontSize(2.5, state.size)
+        },
+        paragraph: {
+            flexGrow: 1,
+            color: "white",
+            padding: 5
         },
         text: {
             color: "white",
-            textAlign: "center"
+            textAlign: "center",
+            padding: 5
         },
         button: {
-            ...BUTTON_DEFAULT
+            fontSize: fontSize(2.5, state.size),
+            color: "white",
+            marginRight: 10
+
         },
         buttonWrapper: {
             flexDirection: "row",
-            justifyContent: "space-around"
+            justifyContent: "space-around",
+            marginBottom: 5
         }
     });
 
@@ -63,6 +80,9 @@ export default function About({dispatch, state}:AboutProps){
                         <Text style={styles.button}>X</Text>
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.paragraph}>
+                    This app was created to experiment working with React Native.
+                </Text>
                 <Text style={styles.text}>
                     Created by: Alex Malotky
                 </Text>
