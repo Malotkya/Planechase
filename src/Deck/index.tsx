@@ -28,7 +28,8 @@ export default function Deck({list = [], shuffle, state, dispatch, additonal}:De
         container: {
             display: "flex",
             flexDirection: state.direction? "row": "column-reverse",
-            flexWrap: "nowrap"
+            flexWrap: "nowrap",
+            gap: 1
         },
         cardWrapper: {
             flexDirection: "row",

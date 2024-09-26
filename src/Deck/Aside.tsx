@@ -18,9 +18,10 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
      */
     const styles = StyleSheet.create({
         container: {
-          width: state.direction? BUTTON_WIDTH: "100%",
-          height: state.direction? "100%":  BUTTON_HEIGHT * 2,
-          flexDirection: state.direction? "column": "row"
+            width: state.direction? BUTTON_WIDTH: "100%",
+            height: state.direction? "100%":  BUTTON_HEIGHT,
+            flexDirection: state.direction? "column": "row",
+            gap: 5
         },
         header: {
             flexGrow: 1,
@@ -39,8 +40,7 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
             justifyContent: state.direction? "flex-end": "center"
         },
         button: {
-            ...BUTTON_DEFAULT,
-            margin: 3
+            ...BUTTON_DEFAULT
         },
         buttonWrapper: {
             width: state.direction? BUTTON_WIDTH: undefined,
@@ -57,14 +57,16 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
                 width: BUTTON_WIDTH,
                 height: "100%",
                 flexDirection: "column",
-                justifyContent: "center"
+                justifyContent: "center",
+                gap: 5
             }
         } else if(width > 520){
             return {
                 width: "100%",
                 height:  BUTTON_HEIGHT,
                 flexDirection: "row-reverse",
-                justifyContent: "center"
+                justifyContent: "center",
+                gap: 3
             }
         } else {
             return {
