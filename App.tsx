@@ -14,6 +14,7 @@ import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT} from './src/Cons
 import { fontSize } from './src/Util';
 import Planechase from './src/Planechase';
 import Bounty from './src/Bounty';
+import About from './src/About';
 
 import allCards from "./cards.json";
 
@@ -235,7 +236,7 @@ export default function App() {
             </View>
             {getCurrent()}
             <StatusBar style="dark"/>
+            <About dispatch={dispatch} state={state} />
         </TouchableOpacity>
-        
     )
 }
