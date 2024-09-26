@@ -29,6 +29,10 @@ export default function Deck({list = [], shuffle, state, dispatch, additonal}:De
             display: "flex",
             flexDirection: state.direction? "row": "column-reverse",
             flexWrap: "nowrap"
+        },
+        cardWrapper: {
+            flexDirection: "row",
+            justifyContent: "center"
         }
     });
     
@@ -81,7 +85,7 @@ export default function Deck({list = [], shuffle, state, dispatch, additonal}:De
     return (
         <View style={styles.container}>
             <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} state={state} dispatch={dispatch}/>
-            <View style={{flexDirection: "row"}}>
+            <View style={styles.cardWrapper}>
                 <Card card={list[index]} size={state.size} horizontal={double}/>
                 {additonal? <Card card={additonal} size={state.size} horizontal={double} />: undefined}
             </View>
