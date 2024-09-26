@@ -70,12 +70,12 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
 
     const showSelectModal = (e:GestureResponderEvent) => {
         e.stopPropagation();
-        dispatch({type:ActionType.FLIP_SELECT_MODAL});
+        dispatch({type:"FLIP_SELECT_MODAL"});
     }
 
     const showAboutModal = (e:GestureResponderEvent) => {
         e.stopPropagation();
-        dispatch({type:ActionType.SHOW_ABOUT_MODAL});
+        dispatch({type:"SHOW_ABOUT_MODAL"});
     }
 
     return (

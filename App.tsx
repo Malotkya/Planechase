@@ -43,64 +43,86 @@ async function forceLandscape() {
  */
 function updateState(state:AppState, action:AppAction):AppState{
     switch(action.type){
-        case ActionType.SHOW_SELECT_MODAL:
-            state.selectModal = true;
-            state.aboutModal = false;
-            return state;
+        case "SHOW_SELECT_MODAL":
+            return {
+                ...state,
+                selectModal: true,
+                aboutModal: false
+            };
 
-        case ActionType.HIDE_SELECT_MODAL:
-            state.selectModal = false;
-            state.aboutModal = false;
-            return state;
+        case "HIDE_SELECT_MODAL":
+            return {
+                ...state,
+                selectModal: false,
+                aboutModal: false
+            };
 
-        case ActionType.FLIP_SELECT_MODAL:
-            state.selectModal = !state.selectModal;
-            state.aboutModal = false;
-            return state;
+        case "FLIP_SELECT_MODAL":
+            return {
+                ...state,
+                selectModal: !state.selectModal,
+                aboutModal: false
+            };
 
-        case ActionType.SHOW_ABOUT_MODAL:
-            state.aboutModal = true;
-            state.selectModal = false;
-            return state;
+        case "SHOW_ABOUT_MODAL":
+            return {
+                ...state,
+                aboutModal: true,
+                selectModal: false
+            };
     
-        case ActionType.HIDE_ABOUT_MODAL:
-            state.aboutModal = false;
-            state.selectModal = false;
-            return state;
+        case "HIDE_ABOUT_MODAL":
+            return {
+                ...state,
+                aboutModal: false,
+                selectModal: false
+            };
     
-        case ActionType.FLIP_ABOUT_MODAL:
-            state.aboutModal = !state.aboutModal;
-            state.selectModal = false;
-            return state;
+        case "FLIP_ABOUT_MODAL":
+            return {
+                ...state,
+                aboutModal: !state.aboutModal,
+                selectModal: false
+            };
 
-        case ActionType.CLOSE_ALL_MODALS:
-            state.aboutModal = false;
-            state.selectModal = false;
-            return state;
+        case "CLOSE_ALL_MODALS":
+            return {
+                ...state,
+                aboutModal: false,
+                selectModal: false
+            };
 
-        case ActionType.DISPLAY_HORIZONTAL:
-            state.direction = true;
-            if(action.value)
-                state.size = action.value;
-            return state;
+        case "DISPLAY_HORIZONTAL":
+            const hValue = action.value || state.size;
+            return {
+                ...state,
+                direction: true,
+                size: hValue
+            };
 
-        case ActionType.DISPLAY_VERTICAL:
-            state.direction = false;
-            if(action.value)
-                state.size = action.value;
-            return state;
+        case "DISPLAY_VERTICAL":
+            const vValue = action.value || state.size;
+            return {
+                ...state,
+                direction: false,
+                size: vValue
+            };
 
-        case ActionType.UPDATE_SIZE:
+        case "UPDATE_SIZE":
             if(typeof action.value === "undefined")
                 throw new TypeError("Need value to update Size!");
-            state.size = action.value;
-            return state;
+            return {
+                ...state,
+                size: action.value
+            };
 
-        case ActionType.UPDATE_CURRENT:
+        case "UPDATE_CURRENT":
             if(typeof action.value === "undefined")
                 throw new TypeError("Need value to update Current!");
-            state.current = action.value;
-            return state;
+            return {
+                ...state,
+                current: action.value
+            };
     }
 
     throw new Error(`Unknow Action type: ${action.type}`);
@@ -161,7 +183,7 @@ export default function App() {
      */
     const updateCurrent = (value:string, index:number) => {
         AsyncStorage.setItem("current", value);
-        dispatch({type:ActionType.UPDATE_CURRENT, value: Number(value)});
+        dispatch({type:"UPDATE_CURRENT", value: Number(value)});
     }
 
     /** Remember Current Selected
@@ -171,9 +193,9 @@ export default function App() {
     useEffect(()=>{
         AsyncStorage.getItem("current").then((value)=>{
             if(value)
-                dispatch({type:ActionType.UPDATE_CURRENT, value: Number(value)});
+                dispatch({type:"UPDATE_CURRENT", value: Number(value)});
         })
-    })
+    }, [])
 
     /** Resize Effect
      * 
@@ -189,21 +211,21 @@ export default function App() {
         );
 
         if( testHeight > testWidth){
-            dispatch({type:ActionType.DISPLAY_VERTICAL, value:testWidth});
+            dispatch({type:"DISPLAY_VERTICAL", value:testWidth});
         } else if(testHeight < testWidth){
-            dispatch({type:ActionType.DISPLAY_HORIZONTAL, value:testHeight});
+            dispatch({type:"DISPLAY_HORIZONTAL", value:testHeight});
         } else {
             if(height > width){
-                dispatch({type:ActionType.DISPLAY_VERTICAL, value:testWidth});
+                dispatch({type:"DISPLAY_VERTICAL", value:testWidth});
             } else {
-                dispatch({type:ActionType.DISPLAY_HORIZONTAL, value:testHeight});
+                dispatch({type:"DISPLAY_HORIZONTAL", value:testHeight});
             }
         }
 
     }, [height, width]);
 
     return (
-        <TouchableOpacity style={styles.container} onPress={()=>dispatch({type:ActionType.CLOSE_ALL_MODALS})}>
+        <TouchableOpacity style={styles.container} onPress={()=>dispatch({type:"CLOSE_ALL_MODALS"})}>
             <View style={styles.header}>
                 <Text style={styles.title}>MTG Companion App</Text>
                 <Picker selectedValue={state.current.toString()} onValueChange={updateCurrent}>
