@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import { useState } from "react";
+import { useState, Dispatch } from "react";
 import {View} from "react-native";
 
 import CardPicker from "./Picker"
@@ -20,20 +20,11 @@ const WANTED:CardBase = {
 
 interface BountyProps {
     init: GameVersion,
-    size:number,
-    horizontal:boolean,
-    visible: boolean
-    flip: ()=>void
+    state:AppState,
+    dispatch:Dispatch<AppAction>
 }
 
-export default function Bounty(props:BountyProps) {
-    //Validate Props
-    const {init, size, horizontal, flip, visible} = props;
-    if(typeof size !== "number")
-        throw new TypeError("Size must be a number!");
-    if(typeof init !== "object")
-        throw new TypeError("Init must be an object!");
-
+export default function Bounty({init, state, dispatch}:BountyProps) {
     const [list, setList] = useState<Array<CardBase>>([]);
 
     /** Shuffle Cards
@@ -55,8 +46,8 @@ export default function Bounty(props:BountyProps) {
     
     return (
         <View>
-            <CardPicker callback={shuffleCards} size={size} init={[init]} visible={visible} storageKey="bounty" horizontal={horizontal}/>
-            <Deck list={list} size={size} shuffle={()=>shuffleCards(list)} flipView={flip} additonal={WANTED} horizontal={horizontal}/>
+            <CardPicker callback={shuffleCards} init={[init]} storageKey="bounty" state={state}/>
+            <Deck list={list} shuffle={()=>shuffleCards(list)} additonal={WANTED} state={state} dispatch={dispatch}/>
         </View> 
     );
 }

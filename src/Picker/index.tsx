@@ -11,26 +11,13 @@ import Category from "./Category";
 import { BUTTON_DEFAULT, BUTTON_WIDTH } from "../Constants";
 
 interface PickerProps {
-    size:number
     callback:Function,
     init: Array<GameVersion>
     storageKey:string
-    visible:boolean
-    horizontal:boolean
+    state:AppState
 }
 
-export default function CardPicker(props:PickerProps){
-    //Check Props
-    const {size, callback, init, storageKey, visible, horizontal} = props;
-    if(typeof size !== "number")
-        throw new TypeError("Size must be a number!");
-    if(typeof callback !== "function")
-        throw new TypeError("Callback must be a function!");
-    if(typeof init !== "object")
-        throw new TypeError("Init Data must be an object!");
-    if(typeof storageKey !== "string")
-        throw new TypeError("Storage Key must be a string!");
-
+export default function CardPicker({callback, init, storageKey, state}:PickerProps){
     const [cards, setCards] = useState<Array<GameVersion>>([]);
 
     /** Card Picker Styling
@@ -38,7 +25,7 @@ export default function CardPicker(props:PickerProps){
      */
     const styles = StyleSheet.create({
         wrapper: {
-            width: size,
+            width: state.size,
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'nowrap',
@@ -48,9 +35,9 @@ export default function CardPicker(props:PickerProps){
         },
         button: BUTTON_DEFAULT,
         modal: {
-            display: visible? "flex": "none",
+            display: state.selectModal? "flex": "none",
             position: "absolute",
-            left: horizontal? BUTTON_WIDTH + 1: undefined,
+            left: state.direction? BUTTON_WIDTH + 1: undefined,
             flexDirection: "row",
             flexWrap: "nowrap",
             flexGrow: 1,
@@ -134,7 +121,7 @@ export default function CardPicker(props:PickerProps){
             <TouchableOpacity style={styles.modal} onPress={stopPropagation}>
                 {cards.map((value, index)=>{
                     return <Category name={value.name}
-                        list={value.value} key={index} size={size}
+                        list={value.value} key={index} size={state.size}
                         onUpdate={(update:CardList)=>updateState(value.name, update)} />
                 })}
             </TouchableOpacity>

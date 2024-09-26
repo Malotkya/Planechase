@@ -2,30 +2,20 @@
  * 
  * @author Alex Malotky
  */
-import {useState, useEffect} from 'react';
+import {useState, useEffect, Dispatch} from 'react';
 import { StyleSheet, View, Image, GestureResponderEvent } from 'react-native';
-import { BUTTON_WIDTH } from '../Constants';
 import Card from "./Card";
 import Aside from './Aside';
 
 interface DeckProps {
     list: Array<CardBase>,
-    size:number,
     shuffle: (e:GestureResponderEvent)=>void,
-    flipView: (e:GestureResponderEvent)=>void,
-    additonal?:CardBase,
-    horizontal: boolean
+    state:AppState,
+    dispatch:Dispatch<AppAction>,
+    additonal?:CardBase
 }
 
-export default function Deck(props:DeckProps){
-    //Validate Props
-    const {list = [], size, shuffle, flipView, additonal, horizontal} = props;
-    if(typeof size !== "number")
-        throw new TypeError("Size must be a number!");
-    if(typeof shuffle !== "function")
-        throw new TypeError("Update must be a function!");
-    if(typeof shuffle !== "function")
-        throw new TypeError("Flip View must be a function!");
+export default function Deck({list = [], shuffle, state, dispatch, additonal}:DeckProps){
 
     const [index, setIndex] = useState(0);
     const double = additonal === undefined
@@ -37,7 +27,7 @@ export default function Deck(props:DeckProps){
     const styles = StyleSheet.create({
         container: {
             display: "flex",
-            flexDirection: horizontal? "row": "column-reverse",
+            flexDirection: state.direction? "row": "column-reverse",
             flexWrap: "nowrap"
         }
     });
@@ -90,10 +80,10 @@ export default function Deck(props:DeckProps){
 
     return (
         <View style={styles.container}>
-            <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} onShow={flipView} horizontal={horizontal}/>
+            <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} state={state} dispatch={dispatch}/>
             <View style={{flexDirection: "row"}}>
-                <Card card={list[index]} size={size} horizontal={double}/>
-                {additonal? <Card card={additonal} size={size} horizontal={double} />: undefined}
+                <Card card={list[index]} size={state.size} horizontal={double}/>
+                {additonal? <Card card={additonal} size={state.size} horizontal={double} />: undefined}
             </View>
         </View>
     );

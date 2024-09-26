@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import { useState } from "react";
+import { Dispatch, useState } from "react";
 import {View} from "react-native";
 
 import CardPicker from "./Picker"
@@ -10,18 +10,11 @@ import Deck from "./Deck";
 
 interface PlanechaseProps {
     init: Array<GameVersion>
-    size:number
-    horizontal:boolean
-    visible: boolean
-    flip: ()=>void
+    state:AppState,
+    dispatch:Dispatch<AppAction>
 }
 
-export default function Planechase(props:PlanechaseProps) {
-    //Validate Props
-    const {init = [], size, horizontal, visible, flip} = props;
-    if(typeof size !== "number")
-        throw new TypeError("Size must be a number!");
-
+export default function Planechase({init = [], state, dispatch}:PlanechaseProps) {
     const [list, setList] = useState<Array<CardBase>>([]);
 
     /** Shuffle Cards
@@ -43,8 +36,8 @@ export default function Planechase(props:PlanechaseProps) {
     
     return (
         <View>
-            <CardPicker callback={shuffleCards} size={size} init={init} visible={visible} storageKey="planechase" horizontal={horizontal}/>
-            <Deck list={list} size={size} shuffle={()=>shuffleCards(list)} flipView={flip} horizontal={horizontal}/>
+            <CardPicker callback={shuffleCards} init={init} storageKey="planechase" state={state}/>
+            <Deck list={list} shuffle={()=>shuffleCards(list)} state={state} dispatch={dispatch} />
         </View> 
     );
 }

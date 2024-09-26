@@ -3,20 +3,19 @@
  * @author Alex Malotky
  */
 import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react'
-import { View, Linking, Text, Button, StyleSheet, useWindowDimensions, Platform, TouchableOpacity } from 'react-native';
+import { useReducer, useEffect } from 'react'
+import { View, Text, StyleSheet, useWindowDimensions, Platform, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as Device from 'expo-device'
 
-import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT, RATIO, BUTTON_DEFAULT } from './src/Constants';
+import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT} from './src/Constants';
 import { fontSize } from './src/Util';
 import Planechase from './src/Planechase';
 import Bounty from './src/Bounty';
 
 import allCards from "./cards.json";
-
 
 //Platform Specific Settings
 if(Platform.OS === "web") {
@@ -36,30 +35,96 @@ async function forceLandscape() {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 }
 
+/** Update App State Reducer
+ * 
+ * @param {AppState} state 
+ * @param {AppAction} action 
+ * @returns {AppState}
+ */
+function updateState(state:AppState, action:AppAction):AppState{
+    switch(action.type){
+        case ActionType.SHOW_SELECT_MODAL:
+            state.selectModal = true;
+            state.aboutModal = false;
+            return state;
+
+        case ActionType.HIDE_SELECT_MODAL:
+            state.selectModal = false;
+            state.aboutModal = false;
+            return state;
+
+        case ActionType.FLIP_SELECT_MODAL:
+            state.selectModal = !state.selectModal;
+            state.aboutModal = false;
+            return state;
+
+        case ActionType.SHOW_ABOUT_MODAL:
+            state.aboutModal = true;
+            state.selectModal = false;
+            return state;
+    
+        case ActionType.HIDE_ABOUT_MODAL:
+            state.aboutModal = false;
+            state.selectModal = false;
+            return state;
+    
+        case ActionType.FLIP_ABOUT_MODAL:
+            state.aboutModal = !state.aboutModal;
+            state.selectModal = false;
+            return state;
+
+        case ActionType.CLOSE_ALL_MODALS:
+            state.aboutModal = false;
+            state.selectModal = false;
+            return state;
+
+        case ActionType.DISPLAY_HORIZONTAL:
+            state.direction = true;
+            if(action.value)
+                state.size = action.value;
+            return state;
+
+        case ActionType.DISPLAY_VERTICAL:
+            state.direction = false;
+            if(action.value)
+                state.size = action.value;
+            return state;
+
+        case ActionType.UPDATE_SIZE:
+            if(typeof action.value === "undefined")
+                throw new TypeError("Need value to update Size!");
+            state.size = action.value;
+            return state;
+
+        case ActionType.UPDATE_CURRENT:
+            if(typeof action.value === "undefined")
+                throw new TypeError("Need value to update Current!");
+            state.current = action.value;
+            return state;
+    }
+
+    throw new Error(`Unknow Action type: ${action.type}`);
+}
+
 export default function App() {
-    const [current, setCurrent] = useState("0");
     const {height, width} = useWindowDimensions();
-    const [size, setSize] = useState(width);
-    const [horizontal, setHorizontal] = useState(false);
-    const [modalVisable, setModalVisable] = useState(false);
+    const [state, dispatch] = useReducer(updateState, {
+        current: 0,
+        size: width,
+        direction: false, 
+        selectModal: false,
+        aboutModal: false
+    })
 
-    const closeModal = () => {
-        setModalVisable(false);
-    }
-
-    const flipModal = () => {
-        setModalVisable(!modalVisable);
-    }
-
-    const PLANECHASE = <Planechase size={size} init={allCards.Planechase} horizontal={horizontal} visible={modalVisable} flip={flipModal} />
-    const BOUNTY = <Bounty size={size} init={allCards.Bounty} horizontal={horizontal} visible={modalVisable} flip={flipModal}/>
+    const PLANECHASE = <Planechase init={allCards.Planechase} state={state} dispatch={dispatch} />
+    const BOUNTY     = <Bounty     init={allCards.Bounty}     state={state} dispatch={dispatch}/>
 
     const getCurrent = ():React.JSX.Element => {
-        switch (current) {
-            case "0":
+        switch (state.current) {
+            case 0:
                 return PLANECHASE;
 
-            case "1":
+            case 1:
                 return BOUNTY;
         }
 
@@ -74,15 +139,15 @@ export default function App() {
             justifyContent: 'center'
         },
         header: {
-            paddingLeft: horizontal? BUTTON_WIDTH: 0,
-            width: size,
+            paddingLeft: state.direction? BUTTON_WIDTH: 0,
+            width: state.size,
             display: "flex",
             justifyContent: "space-around",
             flexDirection: "row",
             marginBottom: 5
         },
         title: {
-            fontSize: fontSize(2, size),
+            fontSize: fontSize(2, state.size),
             color: "white"
         }
     });
@@ -96,7 +161,7 @@ export default function App() {
      */
     const updateCurrent = (value:string, index:number) => {
         AsyncStorage.setItem("current", value);
-        setCurrent(value);
+        dispatch({type:ActionType.UPDATE_CURRENT, value: Number(value)});
     }
 
     /** Remember Current Selected
@@ -106,7 +171,7 @@ export default function App() {
     useEffect(()=>{
         AsyncStorage.getItem("current").then((value)=>{
             if(value)
-                setCurrent(value);
+                dispatch({type:ActionType.UPDATE_CURRENT, value: Number(value)});
         })
     })
 
@@ -114,29 +179,34 @@ export default function App() {
      * 
      */
     useEffect(()=>{
-        const testHeight = Math.ceil((height - (2 *BUTTON_HEIGHT) - 14) * INVERTSE_RATIO);
-        const testWidth = width - BUTTON_WIDTH;
+        const testHeight = Math.min(
+            Math.ceil((height - (2 *BUTTON_HEIGHT) - 14) * INVERTSE_RATIO),
+            MAX_SIZE
+        );
+        const testWidth = Math.min(
+            width - BUTTON_WIDTH,
+            MAX_SIZE
+        );
 
         if( testHeight > testWidth){
-            setHorizontal(false)
-            if(testWidth < MAX_SIZE)
-                setSize(testWidth);
-            else
-                setSize(MAX_SIZE)
+            dispatch({type:ActionType.DISPLAY_VERTICAL, value:testWidth});
+        } else if(testHeight < testWidth){
+            dispatch({type:ActionType.DISPLAY_HORIZONTAL, value:testHeight});
         } else {
-            setHorizontal(true);
-            if(testHeight < MAX_SIZE)
-                setSize(testHeight);
-            else
-                setSize(MAX_SIZE)
+            if(height > width){
+                dispatch({type:ActionType.DISPLAY_VERTICAL, value:testWidth});
+            } else {
+                dispatch({type:ActionType.DISPLAY_HORIZONTAL, value:testHeight});
+            }
         }
+
     }, [height, width]);
 
     return (
-        <TouchableOpacity style={styles.container} onPress={closeModal}>
+        <TouchableOpacity style={styles.container} onPress={()=>dispatch({type:ActionType.CLOSE_ALL_MODALS})}>
             <View style={styles.header}>
                 <Text style={styles.title}>MTG Companion App</Text>
-                <Picker selectedValue={current} onValueChange={updateCurrent}>
+                <Picker selectedValue={state.current.toString()} onValueChange={updateCurrent}>
                     <Picker.Item label="Planechase" value="0"/>
                     <Picker.Item label="Bounty" value="1" />
                 </Picker>
