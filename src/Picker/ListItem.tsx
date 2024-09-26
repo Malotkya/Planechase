@@ -31,13 +31,13 @@ export default function ListItem(props:CardProps){
      */
     const styles = StyleSheet.create({
         touch: {
-            padding: "3px",
+            padding: 3,
             flexDirection: "row",
             borderBottomColor: "black",
             borderBottomWidth: 1
         },
         text: {
-            paddingLeft: "5px",
+            paddingLeft: 5,
             fontSize: fontSize(1.2, size)
         }
     })

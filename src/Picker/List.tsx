@@ -62,7 +62,7 @@ export default function List(props:ListProps){
         },
         checkbox: {
             justifyContent: "center",
-            padding: "3px"
+            padding: 3
         }
     });
 
