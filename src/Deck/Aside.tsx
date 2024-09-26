@@ -53,18 +53,6 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
             height: state.direction? "100%":  BUTTON_HEIGHT,
             flexDirection: state.direction? "column": "row-reverse",
             justifyContent: "center"
-        },
-        footerText: {
-            flexGrow: state.direction? undefined: 1,
-            width: "100%",
-            color: "white",
-            textAlign: "center"
-        },
-        footerButton: {
-            ...BUTTON_DEFAULT,
-            height: state.direction? BUTTON_HEIGHT * 1.5: undefined,
-            width: state.direction? undefined: BUTTON_WIDTH * 1.5,
-            marginBottom: 5
         }
     });
 
@@ -103,15 +91,9 @@ export default function Aside({onNext, onPrev, onShuffle, state, dispatch}:Aside
                 </View>
             </View>
             <View style={styles.footer}>
-                <Text style={styles.footerText}>
-                    Created by: {state.direction? "\n": ""} Alex Malotky
-                </Text>
-                <View style={styles.buttonWrapper} >
-                    <TouchableOpacity onPress={()=>Linking.openURL("https://github.com/Malotkya/Planechase")}>
-                        <Text style={styles.footerButton}>Github Repo</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>Linking.openURL("https://alex.malotky.net/Portfolio")}>
-                        <Text style={styles.footerButton}>My Other Work</Text>
+            <View style={styles.buttonWrapper} >
+                    <TouchableOpacity onPress={showAboutModal}>
+                        <Text style={styles.button}>About</Text>
                     </TouchableOpacity>
                 </View>
             </View>
