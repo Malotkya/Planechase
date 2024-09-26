@@ -159,7 +159,8 @@ export default function App() {
             flex: 1,
             backgroundColor: 'black',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            cursor: "auto"
         },
         header: {
             paddingLeft: state.direction? BUTTON_WIDTH: 0,
@@ -226,7 +227,7 @@ export default function App() {
     }, [height, width]);
 
     return (
-        <TouchableOpacity style={styles.container} onPress={()=>dispatch({type:"CLOSE_ALL_MODALS"})}>
+        <TouchableOpacity style={styles.container} activeOpacity={1} onPress={()=>dispatch({type:"CLOSE_ALL_MODALS"})}>
             <View style={styles.header}>
                 <Text style={styles.title}>MTG Companion App</Text>
                 <Picker selectedValue={state.current.toString()} onValueChange={updateCurrent}>
