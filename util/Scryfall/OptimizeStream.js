@@ -120,7 +120,8 @@ class OptimizeStream extends Transform {
                 name: object.name,
                 text: object.oracle_text,
                 type: object.type_line,
-                image_uri: object.image_uris.normal
+                image_uri: object.image_uris.normal,
+                use: true
             }
             
             if(temp.type.includes(PLANE)){
