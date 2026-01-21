@@ -15,12 +15,7 @@ interface cardProps {
     horizontal:boolean
 }
 
-export default function Card(props:cardProps){
-    //Validate props
-    const {card = {}, size, horizontal = true} = props;
-    if(typeof size !== "number")
-        throw new TypeError("Size must be a number!");
-
+export default function Card({card, size, horizontal = true}:cardProps){
     const [visible, setVisible] = useState(true);
     
     //Calculate Dimensions
@@ -28,14 +23,6 @@ export default function Card(props:cardProps){
                              : Math.ceil(size / 2);
     const height = horizontal? Math.ceil(size * RATIO)
                              : Math.ceil(width * INVERTSE_RATIO)
-
-    //Validate Card
-    const {
-        name = "undefined",
-        type = "undefined",
-        text = "undefined",
-        image_uri = ""
-    } = card as CardBase;
 
     /** Card Styling
      * 
@@ -87,14 +74,14 @@ export default function Card(props:cardProps){
      */
     useEffect(()=>{
         setVisible(true)
-    }, [props.card])
+    }, [card])
 
     return (
         <TouchableOpacity  style={styles.view} onPress={flip}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.type}>{type}</Text>
-            <Text style={styles.text}>{text.replace(/\n(?!\d)/g, "\n\n")}</Text>
-            <Image style={styles.image} source={{uri:image_uri}} />
+            <Text style={styles.name}>{card.name}</Text>
+            <Text style={styles.type}>{card.type}</Text>
+            <Text style={styles.text}>{card.text.replace(/\n(?!\d)/g, "\n\n")}</Text>
+            <Image style={styles.image} source={{uri:card.image_uri}} />
         </TouchableOpacity >
     )
 };

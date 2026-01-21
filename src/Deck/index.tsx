@@ -2,32 +2,42 @@
  * 
  * @author Alex Malotky
  */
-import {useState, useEffect, Dispatch} from 'react';
-import { StyleSheet, View, Image, GestureResponderEvent } from 'react-native';
+import {useState, Dispatch, useEffect} from 'react';
+import { StyleSheet, View } from 'react-native';
 import Card from "./Card";
 import Aside from './Aside';
 
 interface DeckProps {
-    list: Array<CardBase>,
-    shuffle: (e:GestureResponderEvent)=>void,
+    list:()=>Array<CardBase>,
     state:AppState,
-    dispatch:Dispatch<AppAction>,
-    additonal?:CardBase
+    dispatch:Dispatch<AppAction>
 }
 
-export default function Deck({list = [], shuffle, state, dispatch, additonal}:DeckProps){
+/** Wanted Card
+ * 
+ */
+const WANTED:CardBase = {
+    name: "Wanted!",
+    text: "Before the game, shuffle at least 6 unique bounty cards into a face-down pile.\nAs the starting player's third turn begins, reveal the top bounty card.\nClaim the revealed bounty during your turn and collect your reward!\nAs each turn begins, if no bounty is being offered, reveal the next one. If the pile is empty, shuffle all claimed bounties and restock\nIf the bounty went unclaimed last turn, increase its reward to the next level.\nRewards\n1 — Create a Treasure token\n2 — Create two Treasure tokens\n3 — Create two Treasure tokens *or* draw a card\n4 — (Max) Create two Treasure tokens *and* draw a card.",
+    type: "Card",
+    image_uri: "https://cards.scryfall.io/normal/back/a/c/acd27632-4c28-4dc3-90ad-b94fe176b91a.jpg?1712319002",
+    use: true
+}
 
-    const [index, setIndex] = useState(0);
-    const double = additonal === undefined
-
-
+export default function Deck({list:getList, state:appState, dispatch}:DeckProps){
+    const [state, setState] = useState({
+        index: 0,
+        list: getList()
+    });
+    const isBounty = appState.current !== 0;
+    
     /** Deck Styling
      * 
      */
     const styles = StyleSheet.create({
         container: {
             display: "flex",
-            flexDirection: state.direction? "row": "column-reverse",
+            flexDirection: appState.direction? "row": "column-reverse",
             flexWrap: "nowrap",
             gap: 1
         },
@@ -41,54 +51,52 @@ export default function Deck({list = [], shuffle, state, dispatch, additonal}:De
      * 
      */
     const nextCard = () => {
-        let i = index+1;
-        if(i>=list.length)
-            i=0;
-        setIndex(i);
+        setState((({index, list})=>{
+            index += 1;
+            if(index > list.length)
+                index = 0;
+
+            return {index, list}
+        }))
     }
 
     /** Get Previous Card
      * 
      */
     const prevCard = () => {
-        let i = index-1;
-        if(i<0)
-            i=list.length-1;
-        setIndex(i);
+        setState((({index, list})=>{
+            index -= 1;
+            if(index < 0)
+                index = list.length-1;
+
+            return {index, list}
+        }))
     }
 
-    /** Pre-load the next images on card change.
-     * 
-     */
-    useEffect(()=>{
-        const next= list[index+1];
-        if(next) {
-            Image.prefetch(next.image_uri);
+    const shuffle = () => {
+        setState(({list})=>{
+            const newList: CardBase[] = [];
+            
+            while(list.length > 0){
+            let index = Math.floor(Math.random() * list.length);
+            newList.push(
+                list.splice(index, 1)[0]
+            );
         }
 
-        const prev = list[index-1];
-        if(prev){
-            Image.prefetch(prev.image_uri);
-        }
-    }, [index]);
-
-    /** Pre-load the next images on list change.
-     * 
-     */
-    useEffect(()=>{
-        if(list.length > 1){
-            Image.prefetch(list[1].image_uri);
-            Image.prefetch(list[list.length-1].image_uri);
-        }
-
-    }, [list])
+            return {
+                list: newList,
+                index: 0
+            };
+        });
+    }
 
     return (
         <View style={styles.container}>
-            <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} state={state} dispatch={dispatch}/>
+            <Aside onNext={nextCard} onPrev={prevCard} onShuffle={shuffle} state={appState} dispatch={dispatch}/>
             <View style={styles.cardWrapper}>
-                <Card card={list[index]} size={state.size} horizontal={double}/>
-                {additonal? <Card card={additonal} size={state.size} horizontal={double} />: undefined}
+                <Card card={state.list[state.index]} size={appState.size} horizontal={!isBounty}/>
+                {isBounty? <Card card={WANTED} size={appState.size} horizontal={!isBounty} />: undefined}
             </View>
         </View>
     );
