@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        
+        "noImplicitAny": true,
+        "lib": ["ESNext", "WebWorker"],
+        "strict": true,
+        "module": "nodenext",
+        "target": "es2024",
+        "allowJs": true,
+        "moduleResolution": "nodenext",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+    },
+    "files": [
+        "./index.ts",
+        "./index.d.ts"
+    ]
+}

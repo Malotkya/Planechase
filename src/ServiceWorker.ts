@@ -29,7 +29,11 @@ export function registerServiceWorker(filename:string, updateCallback:(sw:Servic
                 });
             });
         }
-    }).catch(console.error)
+    }).catch(console.error);
+
+    navigator.serviceWorker.ready.then(()=>{
+        navigator.serviceWorker.controller?.postMessage({cache: (document.currentScript as HTMLScriptElement|null)?.src})
+    })
 }
 
 export function loadServiceWorker(filename:string) {
@@ -50,5 +54,7 @@ export function loadServiceWorker(filename:string) {
                 style: 'cancel'
             }
         ])
-    })
+    });
+
+
 }
