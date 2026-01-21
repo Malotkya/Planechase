@@ -15,6 +15,7 @@ import { fontSize } from './src/Util';
 import Planechase from './src/Planechase';
 import Bounty from './src/Bounty';
 import About from './src/About';
+import { loadServiceWorker } from './src/ServiceWorker';
 
 import allCards from "./cards.json";
 
@@ -28,6 +29,8 @@ if(Platform.OS === "web") {
 } else {
     forceLandscape();
 }
+
+loadServiceWorker("sw.js");
 
 /** Force Landscape on Phones and Tablets
  * 
@@ -139,7 +142,7 @@ export default function App() {
         aboutModal: false
     })
 
-    const PLANECHASE = <Planechase init={allCards.Planechase} state={state} dispatch={dispatch} />
+    const PLANECHASE = <Planechase init={allCards.Planechase as GameVersion[]} state={state} dispatch={dispatch} />
     const BOUNTY     = <Bounty     init={allCards.Bounty}     state={state} dispatch={dispatch}/>
 
     const getCurrent = ():React.JSX.Element => {
