@@ -4,14 +4,31 @@ const FILES = [
     "/",
 ]
 
+async function updateCachedFiles(cache:Cache):Promise<string[]>{
+    const images = IMAGES;
+
+    for(const request of await cache.keys()) {
+        const index = images.indexOf(request.url);
+        if(index >= 0){
+            //Remove Image URI's already cached
+            images.splice(index, 1);
+        } else if(request.destination !== "image"){
+
+            //Delete any code files cached
+            await cache.delete(request)
+        }
+    }
+
+    //Return all files that need to be cached still.
+    return FILES.concat(images)
+}
+
 self.addEventListener("install", (event)=>{
-    event.waitUntil(
-        caches.open(VERSION).then(cache=>{
-            const promise = cache.addAll(FILES);
-            cache.addAll(IMAGES); //Dont Wait For Images
-            return promise;
-        })
-    )
+    event.waitUntil((async()=>{
+        const cache = await caches.open(VERSION);
+        const list = await updateCachedFiles(cache);
+        return await cache.addAll(list);
+    })());
 });
 
 self.addEventListener("activate", (event)=>{
