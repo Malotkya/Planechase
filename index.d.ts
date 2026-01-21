@@ -8,7 +8,7 @@ interface CardBase {
     text:string,
     type:string,
     image_uri:string
-    use?:boolean
+    use:boolean
 }
 
 interface CardList {
@@ -50,4 +50,5 @@ type ActionType =
 interface AppAction {
     type:ActionType,
     value?:number
+    state?: AppState
 }
