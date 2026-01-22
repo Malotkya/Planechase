@@ -95,9 +95,8 @@ function handleAction(state:AppState, action:AppAction):AppState|null{
 
 export function updateState(state:AppState, action:AppAction): AppState {
     const update = handleAction(state, action);
-    
     if(update){
-        AsyncStorage.setItem(STATE_KEY, JSON.stringify(state));
+        AsyncStorage.setItem(STATE_KEY, JSON.stringify(update));
         return update;
     }
     
