@@ -22,6 +22,10 @@ const Items:Array<GameVersion[]> = [
 
 export default function Main({state, dispatch}:MainProps) {
     const [list, setList] = useState<Array<GameVersion>>(Items[state.current]);
+    const [current, setCurrent] = useState({
+        cards: getCards(),
+        index: state.current
+    });
 
     /** Get Randomized List of Selected Cards
      * 
@@ -29,10 +33,10 @@ export default function Main({state, dispatch}:MainProps) {
      * 
      * @returns {Array<CardBase>}
      */
-    const getCards = ():Array<CardBase> =>{
+    function getCards(cards:Array<GameVersion> = list):Array<CardBase> {
         const output:Array<CardBase> = [];
 
-        for(const version of list){
+        for(const version of cards){
             for(const index in version.value){
                 for(const card of version.value[index]) {
 
@@ -65,19 +69,30 @@ export default function Main({state, dispatch}:MainProps) {
     }
 
     useEffect(()=>{
-        AsyncStorage.getItem(state.current.toString()).then((value)=>{
+        (async()=>{
+            const value = await AsyncStorage.getItem(state.current.toString());
+
+            let list:GameVersion[];
             if(value){
-                setList(JSON.parse(value))
+                list = JSON.parse(value);
             } else {
-                setList(Items[state.current])
+                list = Items[state.current]
             }
-        })
+
+            setList(list)
+            setCurrent({
+                cards: getCards(list),
+                index: state.current
+            });
+        })()
+
+        
     }, [state.current])
 
     return (
         <View>
             <CardPicker callback={updateListState} state={state} list={list}/>
-            <Deck list={getCards} state={state} dispatch={dispatch}/>
+            <Deck list={current.cards} state={state} dispatch={dispatch}/>
         </View> 
     );
 }

@@ -8,7 +8,7 @@ import Card from "./Card";
 import Aside from './Aside';
 
 interface DeckProps {
-    list:()=>Array<CardBase>,
+    list:Array<CardBase>,
     state:AppState,
     dispatch:Dispatch<AppAction>
 }
@@ -24,10 +24,24 @@ const WANTED:CardBase = {
     use: true
 }
 
-export default function Deck({list:getList, state:appState, dispatch}:DeckProps){
+function shuffle_helper(input:CardBase[]):CardBase[] {
+    input = Array.from(input); //Dont destroy original list.
+    const output: CardBase[] = [];
+
+    while(input.length > 0){
+        let index = Math.floor(Math.random() * input.length);
+        output.push(
+            input.splice(index, 1)[0]
+        );
+    }
+
+    return output;
+}
+
+export default function Deck({list, state:appState, dispatch}:DeckProps){
     const [state, setState] = useState({
         index: 0,
-        list: getList()
+        list: list
     });
     const isBounty = appState.current !== 0;
     
@@ -53,7 +67,7 @@ export default function Deck({list:getList, state:appState, dispatch}:DeckProps)
     const nextCard = () => {
         setState((({index, list})=>{
             index += 1;
-            if(index > list.length)
+            if(index >= list.length)
                 index = 0;
 
             return {index, list}
@@ -75,21 +89,19 @@ export default function Deck({list:getList, state:appState, dispatch}:DeckProps)
 
     const shuffle = () => {
         setState(({list})=>{
-            const newList: CardBase[] = [];
-            
-            while(list.length > 0){
-            let index = Math.floor(Math.random() * list.length);
-            newList.push(
-                list.splice(index, 1)[0]
-            );
-        }
-
             return {
-                list: newList,
+                list: shuffle_helper(list),
                 index: 0
             };
         });
     }
+
+    useEffect(()=>{
+        setState({
+            index: 0,
+            list: shuffle_helper(list)
+        });
+    }, [list])
 
     return (
         <View style={styles.container}>
