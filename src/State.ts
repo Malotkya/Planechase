@@ -76,6 +76,7 @@ function handleAction(state:AppState, action:AppAction):AppState|null{
                     size: action.value || state.size
                 };
             }
+            break;
             
 
         case "UPDATE_CURRENT":
