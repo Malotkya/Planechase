@@ -10,7 +10,7 @@ import { fontSize } from '../Util';
 const OFFSET = -2;
 
 interface cardProps {
-    card:CardBase
+    card:CardBase|undefined
     size:number
     horizontal:boolean
 }
@@ -59,6 +59,13 @@ export default function Card({card, size, horizontal = true}:cardProps){
             width: horizontal? height: width,
             height: horizontal? width: height,
             display: visible? undefined/*"Block"*/: "none"
+        },
+        emptyWarning: {
+            color: "red",
+            textAlign: "center",
+            fontSize: fontSize(2.5, size),
+            fontWeight: "bold",
+            marginTop: fontSize(1, size)
         }
     });
 
@@ -78,10 +85,15 @@ export default function Card({card, size, horizontal = true}:cardProps){
 
     return (
         <TouchableOpacity  style={styles.view} onPress={flip}>
-            <Text style={styles.name}>{card.name}</Text>
-            <Text style={styles.type}>{card.type}</Text>
-            <Text style={styles.text}>{card.text.replace(/\n(?!\d)/g, "\n\n")}</Text>
-            <Image style={styles.image} source={{uri:card.image_uri}} />
+            { card ? (<>
+                    <Text style={styles.name}>{card.name}</Text>
+                    <Text style={styles.type}>{card.type}</Text>
+                    <Text style={styles.text}>{card.text.replace(/\n(?!\d)/g, "\n\n")}</Text>
+                    <Image style={styles.image} source={{uri:card.image_uri}} />
+                </>)
+                : <Text style={styles.emptyWarning}>Select Cards To Use From List</Text>    
+            }
+            
         </TouchableOpacity >
     )
 };
