@@ -22,10 +22,6 @@ const Items:Array<GameVersion[]> = [
 
 export default function Main({state, dispatch}:MainProps) {
     const [list, setList] = useState<Array<GameVersion>>(Items[state.current]);
-    const [current, setCurrent] = useState({
-        cards: getCards(),
-        index: state.current
-    });
 
     /** Get Randomized List of Selected Cards
      * 
@@ -80,19 +76,13 @@ export default function Main({state, dispatch}:MainProps) {
             }
 
             setList(list)
-            setCurrent({
-                cards: getCards(list),
-                index: state.current
-            });
         })()
-
-        
     }, [state.current])
 
     return (
         <View>
             <CardPicker callback={updateListState} state={state} list={list}/>
-            <Deck list={current.cards} state={state} dispatch={dispatch}/>
+            <Deck list={getCards()} state={state} dispatch={dispatch}/>
         </View> 
     );
 }
