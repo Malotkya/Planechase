@@ -15,6 +15,8 @@ interface cardProps {
     horizontal:boolean
 }
 
+const WARNING = "Select Cards To Use%nFrom List";
+
 export default function Card({card, size, horizontal = true}:cardProps){
     const [visible, setVisible] = useState(true);
     
@@ -22,7 +24,7 @@ export default function Card({card, size, horizontal = true}:cardProps){
     const width  = horizontal? size
                              : Math.ceil(size / 2);
     const height = horizontal? Math.ceil(size * RATIO)
-                             : Math.ceil(width * INVERTSE_RATIO)
+                             : Math.ceil(width * INVERTSE_RATIO);
 
     /** Card Styling
      * 
@@ -91,7 +93,11 @@ export default function Card({card, size, horizontal = true}:cardProps){
                     <Text style={styles.text}>{card.text.replace(/\n(?!\d)/g, "\n\n")}</Text>
                     <Image style={styles.image} source={{uri:card.image_uri}} />
                 </>)
-                : <Text style={styles.emptyWarning}>Select Cards To Use From List</Text>    
+                : <Text style={styles.emptyWarning}>{
+                    width < fontSize(WARNING.length * INVERTSE_RATIO, size)
+                        ? WARNING.replaceAll(/%n/g, '\n')
+                        : WARNING.replaceAll(/%n/g, ' ')
+                }</Text>    
             }
             
         </TouchableOpacity >
