@@ -113,3 +113,8 @@ export async function loadState(dispatch:(action:AppAction)=>void) {
         });
     }
 }
+
+export function resetState(width:number): AppState {
+    AsyncStorage.clear();
+    return defaultState(width);
+}

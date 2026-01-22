@@ -2,6 +2,7 @@ import { Dispatch } from "react";
 import {StyleSheet, Modal, Linking, TouchableOpacity, Text, View, useWindowDimensions, Button} from "react-native";
 import { BUTTON_DEFAULT, RATIO } from "./Constants";
 import { fontSize } from "./Util";
+import { resetState } from "./State";
 
 interface AboutProps {
     state: AppState
@@ -43,9 +44,13 @@ export default function About({dispatch, state}:AboutProps){
             fontSize: fontSize(2.5, state.size)
         },
         paragraph: {
-            flexGrow: 1,
             color: "white",
+            textAlign: "center",
             padding: 5
+        },
+        resetWrapper: {
+            flexGrow: 1,
+            justifyContent: "flex-end"
         },
         text: {
             color: "white",
@@ -56,7 +61,6 @@ export default function About({dispatch, state}:AboutProps){
             fontSize: fontSize(2.5, state.size),
             color: "white",
             marginRight: 10
-
         },
         buttonWrapper: {
             flexDirection: "row",
@@ -67,6 +71,10 @@ export default function About({dispatch, state}:AboutProps){
 
     const close = () =>{
         dispatch({type:"HIDE_ABOUT_MODAL"});
+    }
+
+    const reset = () => {
+        dispatch({type:"INIT", state: resetState(state.size)})
     }
 
     return (
@@ -83,6 +91,12 @@ export default function About({dispatch, state}:AboutProps){
                 <Text style={styles.paragraph}>
                     This app was created to experiment working with React Native.
                 </Text>
+                <View style={styles.resetWrapper}>
+                    <Text style={styles.text}>If the app isn't working you can reset the state here:</Text>
+                    <View style={styles.buttonWrapper}>
+                        <Button title={"Reset State"} onPress={reset} />
+                    </View>
+                </View>
                 <Text style={styles.text}>
                     Created by: Alex Malotky
                 </Text>
