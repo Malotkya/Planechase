@@ -37,15 +37,13 @@ interface AppState {
 type ActionType =
     "SHOW_SELECT_MODAL" |
     "HIDE_SELECT_MODAL" |
-    "FLIP_SELECT_MODAL" |
     "SHOW_ABOUT_MODAL" |
     "HIDE_ABOUT_MODAL" |
-    "FLIP_ABOUT_MODAL" |
     "CLOSE_ALL_MODALS" |
     "DISPLAY_HORIZONTAL" |
     "DISPLAY_VERTICAL" |
-    "UPDATE_SIZE" |
-    "UPDATE_CURRENT";
+    "UPDATE_CURRENT" |
+    "INIT";
 
 interface AppAction {
     type:ActionType,
