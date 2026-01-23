@@ -2,11 +2,11 @@
  * 
  * @author Alex Malotky
  */
-import {useState, useEffect} from 'react';
-import {StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-
+import {useState, useLayoutEffect} from 'react';
+import {StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { INVERTSE_RATIO, RATIO } from '../Constants';
 import { fontSize } from '../Util';
+import Image from "../Image";
 const OFFSET = -2;
 
 interface cardProps {
@@ -81,9 +81,10 @@ export default function Card({card, size, horizontal = true}:cardProps){
     /** Reset Visibility if Card Changes
      * 
      */
-    useEffect(()=>{
-        setVisible(true)
-    }, [card])
+    useLayoutEffect(()=>{
+        if(!visible)
+            setVisible(true);
+    }, [card]);
 
     return (
         <TouchableOpacity  style={styles.view} onPress={flip}>
