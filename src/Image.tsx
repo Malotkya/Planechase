@@ -3,17 +3,34 @@ import { ImageProps, StyleProp, View, ImageStyle } from "react-native";
 const cache:Record<string, HTMLImageElement> = {};
 
 export async function prefetch(uris:string[]):Promise<void> {
-    for(const uri of uris) {
-        const img = createImage(uri, '1px', '1px');
+    await Promise.all(uris.map(uri=>new Promise<void>(res=>{
+        const img = createImage(uri, '1px', '1px', (e)=>{
+            if(e.type === "error") {
+                console.error("Failed to preload image: " + uri);
+            }
+            res();
+        });
         document.body.appendChild(img);
         cache[uri] = img;
-    }
+    })))
 }
 
-function createImage(src:string, width:string = '100%', height:string = '100%'):HTMLImageElement {
+function createImage(src:string, width:string = '100%', height:string = '100%', callback?:EventListener):HTMLImageElement {
     const img = new window.Image();
     img.src = src;
     img.draggable = false;
+
+    if(callback) {
+        const listener = (e:Event)=>{
+            img.removeEventListener("error", listener);
+            img.removeEventListener("load", listener);
+            callback(e);
+        }
+
+        img.addEventListener("error", listener);
+        img.addEventListener("load", listener);
+    }
+
     //Match NativeImage Styling 
     img.setAttribute("style", 
         `object-position: left 50% top 50%;
