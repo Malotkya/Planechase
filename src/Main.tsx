@@ -103,8 +103,6 @@ export default function Main({state, dispatch}:MainProps) {
         loadCurrentList()
     }, []);
 
-    console.debug("Main");
-
     return (
         <View>
             <CardPicker callback={updateDeckState} state={state} list={deck.allCards}/>
