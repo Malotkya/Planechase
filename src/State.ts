@@ -8,7 +8,42 @@ export function defaultState(width:number):AppState {
         size: width,
         direction: false, 
         selectModal: false,
-        aboutModal: false
+        aboutModal: false,
+        rotate: false
+    }
+}
+
+export function getDisplayInformation(data:AppAction):{direction:boolean|undefined, size:number|undefined, rotate:boolean|undefined}{
+    const direction = data.type === "DISPLAY_HORIZONTAL"
+        ? true
+        : data.type === "DISPLAY_VERTICAL"
+            ? false
+            : undefined;
+
+    if(Array.isArray(data.value)) {
+        const [size, rotate] = data.value;
+        return {direction, size, rotate}
+    }
+
+    const type = typeof data.value;
+    if(type === "number") {
+        return {
+            direction,
+            size: data.value as number,
+            rotate: undefined
+        }
+    } else if(type === "boolean") {
+        return {
+            direction,
+            size: undefined,
+            rotate: data.value as boolean
+        }
+    }
+
+    return {
+        direction,
+        size: undefined,
+        rotate: undefined
     }
 }
 
@@ -55,36 +90,36 @@ function handleAction(state:AppState, action:AppAction):AppState|null{
                 };
             }
             break;
-            
 
         case "DISPLAY_HORIZONTAL":
-            if(state.direction !== true || (action.value && action.value !== state.size) ) {
-                return {
-                    ...state,
-                    direction: true,
-                    size: action.value || state.size
-                };
-            }
-            break;
-            
-
         case "DISPLAY_VERTICAL":
-            if(state.direction !== false || (action.value && action.value !== state.size) ) {
-                return {
-                    ...state,
-                    direction: false,
-                    size: action.value || state.size
-                };
+        case "ROTATE":
+        const {direction, size = state.size, rotate} = getDisplayInformation(action);
+        let update:AppState|undefined;
+
+        if(direction !== undefined) {
+            if(state.direction !== direction || size !== state.size ) {
+                update = {...state, direction, size}
             }
-            break;
+        }
+
+        if(rotate !== undefined && rotate !== state.rotate) {
+            update = update || {...state};
+            update.rotate = rotate;
+        }
             
+        if(update)
+            return update;
+        break;  
 
         case "UPDATE_CURRENT":
             if(typeof action.value === "undefined")
                 throw new TypeError("Need value to update Current!");
             return {
                 ...state,
-                current: action.value
+                current: typeof action.value === "number"
+                    ? action.value
+                    : 0
             };
     }
 

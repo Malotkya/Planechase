@@ -32,6 +32,7 @@ interface AppState {
     direction: boolean /* true = horizontal */
     selectModal: boolean
     aboutModal: boolean
+    rotate: boolean 
 }
 
 type ActionType =
@@ -43,10 +44,11 @@ type ActionType =
     "DISPLAY_HORIZONTAL" |
     "DISPLAY_VERTICAL" |
     "UPDATE_CURRENT" |
+    "ROTATE" |
     "INIT";
 
 interface AppAction {
     type:ActionType,
-    value?:number
+    value?: number|boolean|[number, boolean]
     state?: AppState
 }
