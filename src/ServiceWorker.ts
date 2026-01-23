@@ -32,7 +32,10 @@ export function registerServiceWorker(filename:string, updateCallback:(sw:Servic
     }).catch(console.error);
 
     navigator.serviceWorker.ready.then(()=>{
-        navigator.serviceWorker.controller?.postMessage({cache: (document.currentScript as HTMLScriptElement|null)?.src})
+        navigator.serviceWorker.controller?.postMessage({cache: (document.currentScript as HTMLScriptElement|null)?.src});
+        navigator.serviceWorker.addEventListener("message", (event)=>{
+            console.error("Error From Service Worker:\n", event.data);
+        })
     })
 }
 

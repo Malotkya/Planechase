@@ -23,6 +23,12 @@ async function updateCachedFiles(cache:Cache):Promise<string[]>{
     return FILES.concat(images)
 }
 
+function sendMessage(value:any) {
+    self.clients.matchAll().then(clients=>{
+        clients.forEach(c=>c.postMessage(value))
+    })
+}
+
 self.addEventListener("install", (event)=>{
     event.waitUntil((async()=>{
         const cache = await caches.open(VERSION);
@@ -58,6 +64,8 @@ self.addEventListener("fetch", (event)=>{
         const response = await fetch(event.request);
         if(response.ok)
             await cache.put(event.request, response.clone());
+        else
+            sendMessage(response.clone())
 
         return response;
     })())
