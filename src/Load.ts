@@ -17,6 +17,7 @@ export function preLoadSettings() {
     //Browser Specific Settings
     if(Platform.OS === "web") {
         document.body.style.backgroundColor = "black";
+        loadServiceWorker("sw.js");
 
     //Apple Specific Settings
     } else if (Device.osName === "iOS" || Device.osName === "iPadOS") {
@@ -30,7 +31,7 @@ export function preLoadSettings() {
     }
 }
 
-export async function initalLoadData(dispatch:(action:AppAction)=>void) {
+export async function initalLoadData(dispatch:(action:AppAction)=>void, width:number) {
     const images = Items.flatMap((g)=>g.flatMap(({value})=>{
         let output: string[] = [];
         for(const name in value) {
@@ -45,8 +46,7 @@ export async function initalLoadData(dispatch:(action:AppAction)=>void) {
     }));
 
     await Promise.all([
-        loadState(dispatch),
-        loadServiceWorker("sw.js"),
+        loadState(dispatch, width),
         prefetch(images)
     ])
 }
