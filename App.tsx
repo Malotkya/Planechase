@@ -13,12 +13,11 @@ import { preLoadSettings, initalLoadData } from './src/Load';
 import Main from './src/Main';
 import About from './src/About';
 
-
 preLoadSettings();
 
 export default function App() {
     const {height, width} = useWindowDimensions();
-    const [state, dispatch] = useReducer(updateState, defaultState(width))
+    const [state, dispatch] = useReducer<AppState, [AppAction]>(updateState, {size:width} as any)
 
     const styles = StyleSheet.create({
         container: {
@@ -88,7 +87,7 @@ export default function App() {
 
     }, [height, width]);
 
-    return (
+    return typeof state.current === "number" ? (
         <TouchableOpacity style={styles.container} activeOpacity={1} onPress={()=>dispatch({type:"CLOSE_ALL_MODALS"})}>
             <View style={styles.header}>
                 <Text style={styles.title}>MTG Companion App</Text>
@@ -101,5 +100,5 @@ export default function App() {
             <StatusBar style="dark"/>
             <About dispatch={dispatch} state={state} />
         </TouchableOpacity>
-    )
+    ): undefined
 }
