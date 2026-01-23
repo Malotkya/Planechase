@@ -1,4 +1,4 @@
-import {StyleSheet, Button, Alert} from 'react-native';
+import {Alert} from 'react-native';
 
 export function registerServiceWorker(filename:string, updateCallback:(sw:ServiceWorker)=>void) {
     if (!("serviceWorker" in navigator))
