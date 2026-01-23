@@ -48,7 +48,7 @@ export default function CardPicker({callback, state, list}:PickerProps){
     return (
         <View style={styles.wrapper}>
             
-            <TouchableOpacity style={styles.modal} onPress={stopPropagation}>
+            <TouchableOpacity style={styles.modal} onPress={stopPropagation} activeOpacity={1}>
                 {list.map((value, index)=>{
                     return <Category name={value.name}
                         list={value.value} key={index} size={state.size}
