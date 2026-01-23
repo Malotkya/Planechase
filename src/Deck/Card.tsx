@@ -7,6 +7,7 @@ import {StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { INVERTSE_RATIO, RATIO } from '../Constants';
 import { fontSize } from '../Util';
 import Image from "../Image";
+
 const OFFSET = -2;
 
 interface cardProps {
@@ -38,7 +39,7 @@ export default function Card({card, size, horizontal = true}:cardProps){
             borderRadius: horizontal? 15: 8,
             borderColor: "black",
             overflow: "hidden",
-            backgroundColor: "white"
+            backgroundColor: visible? "black": "white"
         },
         name: {
             textAlign: "center"
