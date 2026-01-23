@@ -101,7 +101,7 @@ export default function Deck({list, state:appState, dispatch}:DeckProps){
             index: 0,
             list: shuffle_helper(list)
         });
-    }, [list])
+    }, [list]);
 
     return (
         <View style={styles.container}>
