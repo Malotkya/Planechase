@@ -104,13 +104,18 @@ export function updateState(state:AppState, action:AppAction): AppState {
     return state;
 }
 
-export async function loadState(dispatch:(action:AppAction)=>void) {
+export async function loadState(dispatch:(action:AppAction)=>void, width:number) {
     const state = await AsyncStorage.getItem("app.state");
     if(state){
         dispatch({
             type: "INIT",
             state: JSON.parse(state)
         });
+    } else {
+        dispatch({
+            type: "INIT",
+            state: defaultState(width)
+        })
     }
 }
 

@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity } from 'r
 import { Picker } from '@react-native-picker/picker';
 import { INVERTSE_RATIO, MAX_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT} from './src/Constants';
 import { fontSize } from './src/Util';
-import { updateState, defaultState } from './src/State';
+import { updateState } from './src/State';
 import { preLoadSettings, initalLoadData } from './src/Load';
 import Main from './src/Main';
 import About from './src/About';
@@ -57,7 +57,7 @@ export default function App() {
      * Gets current from AsyncStorage on start.
      */
     useEffect(()=>{
-        initalLoadData(dispatch)
+        initalLoadData(dispatch, width)
     }, [])
 
     /** Resize Effect
