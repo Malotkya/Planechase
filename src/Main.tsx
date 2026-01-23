@@ -15,7 +15,7 @@ interface MainProps {
     dispatch:Dispatch<AppAction>
 }
 
-const Items:Array<GameVersion[]> = [
+export const Items:Array<GameVersion[]> = [
     Planechase as GameVersion[],
     [Bounty]
 ]
@@ -97,11 +97,13 @@ export default function Main({state, dispatch}:MainProps) {
         if(state.current !== deck.current) {
             loadCurrentList()
         }
-    }, [state.current])
+    }, [state.current]);
 
     useEffect(()=>{
         loadCurrentList()
-    }, [])
+    }, []);
+
+    console.debug("Main");
 
     return (
         <View>
